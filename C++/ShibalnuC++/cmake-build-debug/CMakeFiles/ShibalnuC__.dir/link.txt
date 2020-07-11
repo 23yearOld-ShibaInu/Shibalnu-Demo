@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/cc -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/ShibalnuC__.dir/main.c.o CMakeFiles/ShibalnuC__.dir/ndk_code_1/Ndk_code_1.c.o  -o ShibalnuC__ 

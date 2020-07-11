@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/main.c
+stdio.h
+-
+
