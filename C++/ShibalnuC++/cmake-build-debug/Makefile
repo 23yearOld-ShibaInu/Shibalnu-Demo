@@ -177,6 +177,33 @@ ndk_code_1/Ndk_code_1.c.s:
 	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_1/Ndk_code_1.c.s
 .PHONY : ndk_code_1/Ndk_code_1.c.s
 
+ndk_code_2/ndk_code2.o: ndk_code_2/ndk_code2.c.o
+
+.PHONY : ndk_code_2/ndk_code2.o
+
+# target to build an object file
+ndk_code_2/ndk_code2.c.o:
+	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_2/ndk_code2.c.o
+.PHONY : ndk_code_2/ndk_code2.c.o
+
+ndk_code_2/ndk_code2.i: ndk_code_2/ndk_code2.c.i
+
+.PHONY : ndk_code_2/ndk_code2.i
+
+# target to preprocess a source file
+ndk_code_2/ndk_code2.c.i:
+	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_2/ndk_code2.c.i
+.PHONY : ndk_code_2/ndk_code2.c.i
+
+ndk_code_2/ndk_code2.s: ndk_code_2/ndk_code2.c.s
+
+.PHONY : ndk_code_2/ndk_code2.s
+
+# target to generate assembly for a file
+ndk_code_2/ndk_code2.c.s:
+	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_2/ndk_code2.c.s
+.PHONY : ndk_code_2/ndk_code2.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -192,6 +219,9 @@ help:
 	@echo "... ndk_code_1/Ndk_code_1.o"
 	@echo "... ndk_code_1/Ndk_code_1.i"
 	@echo "... ndk_code_1/Ndk_code_1.s"
+	@echo "... ndk_code_2/ndk_code2.o"
+	@echo "... ndk_code_2/ndk_code2.i"
+	@echo "... ndk_code_2/ndk_code2.s"
 .PHONY : help
 
 

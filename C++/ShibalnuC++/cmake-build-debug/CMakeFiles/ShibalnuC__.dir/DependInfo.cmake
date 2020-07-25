@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/main.c" "/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles/ShibalnuC__.dir/main.c.o"
   "/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/ndk_code_1/Ndk_code_1.c" "/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles/ShibalnuC__.dir/ndk_code_1/Ndk_code_1.c.o"
+  "/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/ndk_code_2/ndk_code2.c" "/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles/ShibalnuC__.dir/ndk_code_2/ndk_code2.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 

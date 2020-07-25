@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-
+#include "ndk_code_2/ndk_code2.h"
 //引入头文件  #include <xx.h>
 
 void NdkCode1();
+void NdkCode2();
 
 int main() {
 //    printf("Hello, World!\n");
     NdkCode1();
+    NdkCode2();
     return 0;
 }
 
@@ -113,6 +115,7 @@ void NdkCode1(){
 
 
 
+void NdkCode2(){ ndk2Init(); }
 
 
 
