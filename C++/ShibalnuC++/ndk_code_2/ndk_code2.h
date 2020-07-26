@@ -12,3 +12,13 @@ void ndk2Init();
 
 void doMethod(int *numbrt1,int *number2);
 
+void add(char * flag, ...);
+
+void say(void(*tt)(char*),char *msg);
+
+void * myPrintln(char *msg);
+
+void loginEngine(void(*resultSuccess)(int64_t code,char *msg),void(resultError)(int64_t code,char *msg));
+
+void * loginSuccess(int64_t code,char *msg);
+void * loginError(int64_t code,char *msg);
