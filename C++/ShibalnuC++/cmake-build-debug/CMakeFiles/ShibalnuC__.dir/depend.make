@@ -3,9 +3,13 @@
 
 CMakeFiles/ShibalnuC__.dir/main.c.o: ../main.c
 CMakeFiles/ShibalnuC__.dir/main.c.o: ../ndk_code_2/ndk_code2.h
+CMakeFiles/ShibalnuC__.dir/main.c.o: ../ndk_code_3/ndk_code3.h
 
 CMakeFiles/ShibalnuC__.dir/ndk_code_1/Ndk_code_1.c.o: ../ndk_code_1/Ndk_code_1.c
 
 CMakeFiles/ShibalnuC__.dir/ndk_code_2/ndk_code2.c.o: ../ndk_code_2/ndk_code2.c
 CMakeFiles/ShibalnuC__.dir/ndk_code_2/ndk_code2.c.o: ../ndk_code_2/ndk_code2.h
+
+CMakeFiles/ShibalnuC__.dir/ndk_code_3/ndk_code3.c.o: ../ndk_code_3/ndk_code3.c
+CMakeFiles/ShibalnuC__.dir/ndk_code_3/ndk_code3.c.o: ../ndk_code_3/ndk_code3.h
 

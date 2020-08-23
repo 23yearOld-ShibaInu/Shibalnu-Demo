@@ -104,9 +104,9 @@ char *name = NAME;
 
 //#ifndef DEBUG_MODE
 #ifdef DEBUG_MODE //如果定义 DEBUG_MODE 这个宏
-    printf("配合宏 debug");
+    printf("配合宏 debug\n");
 #else if
-    printf("配合宏 relase");
+    printf("配合宏 relase\n");
 #endif
 
 
@@ -126,8 +126,6 @@ void doMethod(int *number1,int *number2){
     int temp = *number1;
     *number1 = *number2;
     *number2 = temp;
-//    printf("doMethod number1: %d   number2:  %d\n",number1,number2);
-
 }
 
 //可变参数

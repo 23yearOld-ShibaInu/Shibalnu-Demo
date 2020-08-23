@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/main.cpp
+iostream
+-
+string
+-
+main.h
+/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/main.h
+
+/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/main.h
+

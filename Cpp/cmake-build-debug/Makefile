@@ -48,10 +48,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++
+CMAKE_SOURCE_DIR = /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/cmake-build-debug/CMakeFiles /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named ShibalnuC__
+# Target rules for targets named Cpp
 
 # Build rule for target.
-ShibalnuC__: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ShibalnuC__
-.PHONY : ShibalnuC__
+Cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Cpp
+.PHONY : Cpp
 
 # fast build rule for target.
-ShibalnuC__/fast:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/build
-.PHONY : ShibalnuC__/fast
+Cpp/fast:
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/build
+.PHONY : Cpp/fast
 
 main.o: main.c.o
 
@@ -129,7 +129,7 @@ main.o: main.c.o
 
 # target to build an object file
 main.c.o:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/main.c.o
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/main.c.o
 .PHONY : main.c.o
 
 main.i: main.c.i
@@ -138,7 +138,7 @@ main.i: main.c.i
 
 # target to preprocess a source file
 main.c.i:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/main.c.i
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/main.c.i
 .PHONY : main.c.i
 
 main.s: main.c.s
@@ -147,89 +147,35 @@ main.s: main.c.s
 
 # target to generate assembly for a file
 main.c.s:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/main.c.s
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/main.c.s
 .PHONY : main.c.s
 
-ndk_code_1/Ndk_code_1.o: ndk_code_1/Ndk_code_1.c.o
+main.o: main.cpp.o
 
-.PHONY : ndk_code_1/Ndk_code_1.o
-
-# target to build an object file
-ndk_code_1/Ndk_code_1.c.o:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_1/Ndk_code_1.c.o
-.PHONY : ndk_code_1/Ndk_code_1.c.o
-
-ndk_code_1/Ndk_code_1.i: ndk_code_1/Ndk_code_1.c.i
-
-.PHONY : ndk_code_1/Ndk_code_1.i
-
-# target to preprocess a source file
-ndk_code_1/Ndk_code_1.c.i:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_1/Ndk_code_1.c.i
-.PHONY : ndk_code_1/Ndk_code_1.c.i
-
-ndk_code_1/Ndk_code_1.s: ndk_code_1/Ndk_code_1.c.s
-
-.PHONY : ndk_code_1/Ndk_code_1.s
-
-# target to generate assembly for a file
-ndk_code_1/Ndk_code_1.c.s:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_1/Ndk_code_1.c.s
-.PHONY : ndk_code_1/Ndk_code_1.c.s
-
-ndk_code_2/ndk_code2.o: ndk_code_2/ndk_code2.c.o
-
-.PHONY : ndk_code_2/ndk_code2.o
+.PHONY : main.o
 
 # target to build an object file
-ndk_code_2/ndk_code2.c.o:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_2/ndk_code2.c.o
-.PHONY : ndk_code_2/ndk_code2.c.o
+main.cpp.o:
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-ndk_code_2/ndk_code2.i: ndk_code_2/ndk_code2.c.i
+main.i: main.cpp.i
 
-.PHONY : ndk_code_2/ndk_code2.i
-
-# target to preprocess a source file
-ndk_code_2/ndk_code2.c.i:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_2/ndk_code2.c.i
-.PHONY : ndk_code_2/ndk_code2.c.i
-
-ndk_code_2/ndk_code2.s: ndk_code_2/ndk_code2.c.s
-
-.PHONY : ndk_code_2/ndk_code2.s
-
-# target to generate assembly for a file
-ndk_code_2/ndk_code2.c.s:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_2/ndk_code2.c.s
-.PHONY : ndk_code_2/ndk_code2.c.s
-
-ndk_code_3/ndk_code3.o: ndk_code_3/ndk_code3.c.o
-
-.PHONY : ndk_code_3/ndk_code3.o
-
-# target to build an object file
-ndk_code_3/ndk_code3.c.o:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_3/ndk_code3.c.o
-.PHONY : ndk_code_3/ndk_code3.c.o
-
-ndk_code_3/ndk_code3.i: ndk_code_3/ndk_code3.c.i
-
-.PHONY : ndk_code_3/ndk_code3.i
+.PHONY : main.i
 
 # target to preprocess a source file
-ndk_code_3/ndk_code3.c.i:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_3/ndk_code3.c.i
-.PHONY : ndk_code_3/ndk_code3.c.i
+main.cpp.i:
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-ndk_code_3/ndk_code3.s: ndk_code_3/ndk_code3.c.s
+main.s: main.cpp.s
 
-.PHONY : ndk_code_3/ndk_code3.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-ndk_code_3/ndk_code3.c.s:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/ndk_code_3/ndk_code3.c.s
-.PHONY : ndk_code_3/ndk_code3.c.s
+main.cpp.s:
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -239,19 +185,13 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... ShibalnuC__"
+	@echo "... Cpp"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... ndk_code_1/Ndk_code_1.o"
-	@echo "... ndk_code_1/Ndk_code_1.i"
-	@echo "... ndk_code_1/Ndk_code_1.s"
-	@echo "... ndk_code_2/ndk_code2.o"
-	@echo "... ndk_code_2/ndk_code2.i"
-	@echo "... ndk_code_2/ndk_code2.s"
-	@echo "... ndk_code_3/ndk_code3.o"
-	@echo "... ndk_code_3/ndk_code3.i"
-	@echo "... ndk_code_3/ndk_code3.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 

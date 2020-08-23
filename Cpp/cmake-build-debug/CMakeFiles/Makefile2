@@ -44,16 +44,16 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++
+CMAKE_SOURCE_DIR = /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/ShibalnuC__.dir/all
+all: CMakeFiles/Cpp.dir/all
 
 .PHONY : all
 
@@ -63,36 +63,36 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/ShibalnuC__.dir/clean
+clean: CMakeFiles/Cpp.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/ShibalnuC__.dir
+# Target rules for target CMakeFiles/Cpp.dir
 
 # All Build rule for target.
-CMakeFiles/ShibalnuC__.dir/all:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/depend
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5 "Built target ShibalnuC__"
-.PHONY : CMakeFiles/ShibalnuC__.dir/all
+CMakeFiles/Cpp.dir/all:
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/depend
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target Cpp"
+.PHONY : CMakeFiles/Cpp.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/ShibalnuC__.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles 5
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/ShibalnuC__.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/ShibalnuC__.dir/rule
+CMakeFiles/Cpp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/cmake-build-debug/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Cpp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/Cpp.dir/rule
 
 # Convenience name for target.
-ShibalnuC__: CMakeFiles/ShibalnuC__.dir/rule
+Cpp: CMakeFiles/Cpp.dir/rule
 
-.PHONY : ShibalnuC__
+.PHONY : Cpp
 
 # clean rule for target.
-CMakeFiles/ShibalnuC__.dir/clean:
-	$(MAKE) -f CMakeFiles/ShibalnuC__.dir/build.make CMakeFiles/ShibalnuC__.dir/clean
-.PHONY : CMakeFiles/ShibalnuC__.dir/clean
+CMakeFiles/Cpp.dir/clean:
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/clean
+.PHONY : CMakeFiles/Cpp.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

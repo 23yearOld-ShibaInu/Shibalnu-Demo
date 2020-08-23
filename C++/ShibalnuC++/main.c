@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include "ndk_code_2/ndk_code2.h"
+
+#include "ndk_code_3/ndk_code3.h"
 //引入头文件  #include <xx.h>
 
 void NdkCode1();
@@ -12,6 +14,7 @@ int main() {
 //    printf("Hello, World!\n");
     NdkCode1();
     NdkCode2();
+    ndk3Init();
     return 0;
 }
 
