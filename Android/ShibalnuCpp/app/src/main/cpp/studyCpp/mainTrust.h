@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Student.h"
 #include "TrustInstance.h"
+#include "TrustExtends.h"
 
 #ifndef SHIBALNUCPP_MAIN_H
 #define SHIBALNUCPP_MAIN_H
