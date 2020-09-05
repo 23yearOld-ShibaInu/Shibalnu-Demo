@@ -14,6 +14,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   )
 set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/main.cpp" "/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/cmake-build-debug/CMakeFiles/Cpp.dir/main.cpp.o"
+  "/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/ndk6/ndk6.cpp" "/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/cmake-build-debug/CMakeFiles/Cpp.dir/ndk6/ndk6.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 

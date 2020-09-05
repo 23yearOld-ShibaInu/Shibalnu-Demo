@@ -94,6 +94,12 @@
 		<Unit filename="/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/ndk_code_3/ndk_code3.h">
 			<Option target="ShibalnuC__"/>
 		</Unit>
+		<Unit filename="/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/ndk_code_6/ndk_6.cpp">
+			<Option target="ShibalnuC__"/>
+		</Unit>
+		<Unit filename="/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/ndk_code_6/ndk_6.h">
+			<Option target="ShibalnuC__"/>
+		</Unit>
 		<Unit filename="/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

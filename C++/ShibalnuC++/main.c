@@ -1,3 +1,4 @@
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -5,6 +6,8 @@
 #include "ndk_code_2/ndk_code2.h"
 
 #include "ndk_code_3/ndk_code3.h"
+
+#include "ndk_code_6/ndk_6.h"
 //引入头文件  #include <xx.h>
 
 void NdkCode1();
@@ -114,6 +117,9 @@ void NdkCode1(){
 
     //释放之后 指针就成了野指针
     p3 = 0; //p3 = NULL; 效果一样
+
+    ndk_6 *ndk_6;
+    ndk_6.m
 }
 
 

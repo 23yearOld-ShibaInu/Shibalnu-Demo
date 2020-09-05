@@ -1,5 +1,7 @@
 #include <iostream> //C++标准包
 #include <string>
+#include "ndk6/ndk6.h"
+#include "ndk6/Log.h"
 //命名空间  c++才有  类似于java中的导包
 using namespace std;
 //自定义命名空间
@@ -97,5 +99,8 @@ int main() {
     changeMethed(ageYin);
     cout << "引用类型:"<< age <<endl;
 
+
+    ndk6 *n;
+    n->test();
     return 0;
 }

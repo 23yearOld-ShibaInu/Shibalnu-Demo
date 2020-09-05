@@ -6,4 +6,10 @@ CMakeFiles/Cpp.dir/main.c.o: ../main.h
 
 CMakeFiles/Cpp.dir/main.cpp.o: ../main.cpp
 CMakeFiles/Cpp.dir/main.cpp.o: ../main.h
+CMakeFiles/Cpp.dir/main.cpp.o: ../ndk6/Log.h
+CMakeFiles/Cpp.dir/main.cpp.o: ../ndk6/ndk6.h
+
+CMakeFiles/Cpp.dir/ndk6/ndk6.cpp.o: ../ndk6/Log.h
+CMakeFiles/Cpp.dir/ndk6/ndk6.cpp.o: ../ndk6/ndk6.cpp
+CMakeFiles/Cpp.dir/ndk6/ndk6.cpp.o: ../ndk6/ndk6.h
 

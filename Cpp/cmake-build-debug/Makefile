@@ -177,6 +177,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+ndk6/ndk6.o: ndk6/ndk6.cpp.o
+
+.PHONY : ndk6/ndk6.o
+
+# target to build an object file
+ndk6/ndk6.cpp.o:
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/ndk6/ndk6.cpp.o
+.PHONY : ndk6/ndk6.cpp.o
+
+ndk6/ndk6.i: ndk6/ndk6.cpp.i
+
+.PHONY : ndk6/ndk6.i
+
+# target to preprocess a source file
+ndk6/ndk6.cpp.i:
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/ndk6/ndk6.cpp.i
+.PHONY : ndk6/ndk6.cpp.i
+
+ndk6/ndk6.s: ndk6/ndk6.cpp.s
+
+.PHONY : ndk6/ndk6.s
+
+# target to generate assembly for a file
+ndk6/ndk6.cpp.s:
+	$(MAKE) -f CMakeFiles/Cpp.dir/build.make CMakeFiles/Cpp.dir/ndk6/ndk6.cpp.s
+.PHONY : ndk6/ndk6.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -192,6 +219,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... ndk6/ndk6.o"
+	@echo "... ndk6/ndk6.i"
+	@echo "... ndk6/ndk6.s"
 .PHONY : help
 
 
