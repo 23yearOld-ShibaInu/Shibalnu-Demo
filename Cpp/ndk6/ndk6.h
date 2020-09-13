@@ -15,7 +15,7 @@
 #include <fstream>
 
 #include <istream>
-
+#include <stdlib.h>
 
 #include <pthread.h>
 
@@ -24,6 +24,10 @@
 #endif //CPP_NDK6_H
 
 using namespace std;
+
+
+
+#include "safe_queue_tool.h"
 
 class ndk6 {
 public:
@@ -34,6 +38,8 @@ private:
     void filec();
     void filecpp();
     void trustPthread();
+    static void trustPthreadSync();
+    void trustPthreadCont();
 };
 
 

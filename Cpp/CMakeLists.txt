@@ -12,7 +12,7 @@ project(Cpp) #目标库
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Cpp main.cpp main.c main.h ndk6/ndk6.cpp ndk6/ndk6.h ndk6/Log.h )
+add_executable(Cpp main.cpp main.c main.h ndk6/ndk6.cpp ndk6/ndk6.h ndk6/Log.h ndk6/safe_queue_tool.h)
 
 # TODO
 #target_link_libraries(Cpp pthreadVC2)

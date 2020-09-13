@@ -96,6 +96,9 @@
 		<Unit filename="/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/ndk6/ndk6.h">
 			<Option target="Cpp"/>
 		</Unit>
+		<Unit filename="/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/ndk6/safe_queue_tool.h">
+			<Option target="Cpp"/>
+		</Unit>
 		<Unit filename="/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

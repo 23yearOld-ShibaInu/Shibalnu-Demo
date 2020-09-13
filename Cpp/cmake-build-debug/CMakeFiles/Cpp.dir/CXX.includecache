@@ -6,6 +6,20 @@
 
 #IncludeRegexTransform: 
 
+/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/main.cpp
+iostream
+-
+string
+-
+ndk6/ndk6.h
+/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/ndk6/ndk6.h
+ndk6/Log.h
+/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/ndk6/Log.h
+main.h
+/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/main.h
+
+/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/main.h
+
 /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/ndk6/Log.h
 iostream
 -
@@ -13,6 +27,8 @@ string
 -
 
 /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/ndk6/ndk6.cpp
+zconf.h
+-
 ndk6.h
 /Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/ndk6/ndk6.h
 
@@ -36,5 +52,21 @@ istream
 fstream
 -
 istream
+-
+stdlib.h
+-
+pthread.h
+-
+safe_queue_tool.h
+/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/ndk6/safe_queue_tool.h
+
+/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/Cpp/ndk6/safe_queue_tool.h
+iostream
+-
+string
+-
+pthread.h
+-
+queue
 -
 

@@ -2,6 +2,7 @@
 // Created by Trust on 2020/9/5.
 //
 
+#include <zconf.h>
 #include "ndk6.h"
 using namespace std;
 void testMain(){
@@ -175,9 +176,11 @@ void ndk6::MainTest() {
     //TODO
     //文件操作
 
-    filec();
-    filecpp();
-    trustPthread();
+//    filec();
+//    filecpp();
+//    trustPthread();
+//    trustPthreadSync();
+    trustPthreadCont();
 }
 
 
@@ -240,39 +243,58 @@ void ndk6::filecpp() {
     ofstream outFile;
     outFile.open(filevar);
 
-    //获取用户在控制台输入的信息
-    showLog("请输入保存的信息:");
-    //控制台输入的信息 输入data
-    cin >> data;
-    //把data数据 输出给outFile
-    outFile << data << endl;
+//    //获取用户在控制台输入的信息
+//    showLog("请输入保存的信息:");
+//    //控制台输入的信息 输入data
+//    cin >> data;
+//    //把data数据 输出给outFile
+//    outFile << data << endl;
+//
+//    outFile.close();
+//
+//    //读取操作
+//    char readData[200];
+//    showLog("读取cppfile 文件的内容");
+//    ifstream  ifstreamVar;
+//    ifstreamVar.open(filevar);
+//
+//    ifstreamVar >> readData;
 
-    outFile.close();
-
-    //读取操作
-    char readData[200];
-    showLog("读取cppfile 文件的内容");
-    ifstream  ifstreamVar;
-    ifstreamVar.open(filevar);
-
-    ifstreamVar >> readData;
-
-    showLog("cppfile 内容:");
-    showLog(readData);
-    ifstreamVar.close();
+//    showLog("cppfile 内容:");
+//    showLog(readData);
+//    ifstreamVar.close();
 }
 
-void * customPthreadMethed (void * pVoid){
+void * customPthreadMethed (void * pVoid){// 能接收所有的类型
+    int result = *static_cast<int *>(pVoid);
+    showLog("耗时操作执行了");
+    showLog(result);
 
+    for (int i = 0; i < 100; ++i) {
+        sleep(0.2);
+        showLog(i);
+    }
 
     //必须返回0 不返回 会出现莫名其妙的问题
     return 0;
 }
 
 
+//线程升级
+void * customPthreadMethed2(void *pVoid){
+    showLog("显示customPthreadMethed2   ");
+    for (int i = 0; i < 100; ++i) {
+        sleep(0.2);
+        showLog(i);
+    }
+
+    return 0;
+}
+
+
 void ndk6::trustPthread() {
     //mac 不需要特殊操作
-    //win 是需要下载pthread包 已经去cmakelist中配置
+    //win 是需要下载pthread包 以及去cmakelist中配置
     //cmakelist 中
     //方法1 win 上编译可能会报错 会提示缺少一个宏 要在源码里面自己定义出来就ok
     //方法2 cmakelist中解决宏没有定义的问题
@@ -286,8 +308,171 @@ void ndk6::trustPthread() {
                        const pthread_attr_t * _Nullable __restrict,  线程属性
                        void * _Nullable (* _Nonnull)(void * _Nullable), 函数指针  执行异步任务
                        void * _Nullable __restrict);          函数指针的参数传递*/
-    pthread_t  pthreadID;
-    int value01 = 9988;
-    pthread_create(&pthreadID,0,customPthreadMethed,&value01);
+
+    //TODO 简单版本
+//    pthread_t  pthreadID;
+//    int value01 = 9988;
+//    pthread_create(&pthreadID,0,customPthreadMethed,&value01);
     //ndk07  第二节
+    //直接运行子线程是不会执行的 因为main结束的太快 子线程还没有开始执行main就完了所以子线程还没有开始就结束了
+    //直接睡眠 0.3s 的时候 子线程执行到一半 就会被结束
+
+    //等待子线程执行完成后才会执行后面的代码
+    //pthread_join(pthreadID,0);
+
+    //win
+    //会遇到的坑 什么都不输出 只返回了一个错误码 -1073741515(0xC0000135)
+    //dll文件下  x64 文件下 pthreadVc2.dll 复制一份 到 c盘windows 文件下面 System32 文件下
+    //dll文件下  x86 文件下 pthreadVc2.dll 复制一份 到 c盘windows 文件下面 SysWOW64 文件下
+    //win上调用pthread的时候会使用到动态链接库
+//    showLog("线程执行ok");
+
+    pthread_t pthreadIdd ;//线程ID 允许有野指针
+    pthread_attr_t pthreadAttr;//线程属性 线程属性不允许有野指针
+
+
+    float value = 0.5;
+    //初始化线程属性
+    pthread_attr_init(&pthreadAttr);
+
+    //pthreadAttr线程属性的作用
+    //什么是分离线程?
+    //各自执行各自的  不管异步任务是否执行完毕 该结束就结束
+    //什么是非分离线程？
+    //非分离线程 等待耗时任务全部完成后才会执行join后面关联的代码逻辑  先执行异步任务 才会执行join后面的逻辑
+
+    //开启分离线程
+    pthread_attr_setdetachstate(&pthreadAttr,PTHREAD_CREATE_DETACHED);//join 效果不生效
+//    pthread_attr_setdetachstate(&pthreadAttr,PTHREAD_CREATE_JOINABLE);// pthread_join 对应的
+
+    pthread_create(&pthreadIdd,&pthreadAttr,customPthreadMethed2,&value);
+    //先让耗时操作执行完成后 在执行下面的代码
+    pthread_join(pthreadIdd,0);
+
+    //回收线程属性
+    pthread_attr_destroy(&pthreadAttr);
+
+
+    //正常情况不分离  特殊情况分离
+
+
+
+
+
+}
+
+//存储一个全局队列
+queue<int> saveAllData;
+using namespace std;
+
+//定一个互斥锁  互斥锁不能是野指针 否则崩溃
+pthread_mutex_t mutexs;
+
+void * customPthreadMethed3(void * pVoid){
+    //10条线程 同时运行 并对 队列数据进行操作  要保证数据的安全(加锁)
+    //上锁
+    pthread_mutex_lock(&mutexs);
+    showLog("当前线程已经上锁 标记: ");
+    showLog(*static_cast<int *>(pVoid));
+
+    if(!saveAllData.empty()){
+        showLog("获取队列的数据:");
+        showLog(saveAllData.front());
+        saveAllData.pop();
+    }else{
+        showLog("队列已经一滴都没有了");
+    }
+
+    //释放锁
+    pthread_mutex_unlock(&mutexs);
+
+    return nullptr;
+}
+
+void ndk6::trustPthreadSync() {
+    //初始化互斥锁
+    pthread_mutex_init(&mutexs,nullptr);
+
+    //TODO 线程安全问题 互斥锁
+    //ndk 7 第二节 43:43
+    showLog("--------线程安全问题 互斥锁---------");
+    //初始化队列
+    for (int j = 1000; j < 10030; ++j) {
+        saveAllData.push(j);
+    }
+
+    pthread_t pthreadIDArray[30];//允许有野指针
+    for (int i = 0; i < 30; ++i) {
+        pthread_create(&pthreadIDArray[i],nullptr,customPthreadMethed3,&i);
+    }
+
+    //回收互斥锁
+    pthread_mutex_destroy(&mutexs);
+
+    //演示使用 防止main直接结束
+//    system("Pause");
+    cin.get();
+
+    //ndk7  1:07:05
+
+
+
+}
+
+SafeQueueClass<int> sq;
+
+
+//模拟演示消费者
+void * getMethod(void *){
+    while (9){
+        showLog("getMethod");
+        int value;
+        sq.get(value);
+
+        showLog("value 是");
+        showLog(value);
+
+        //输入-1 就结束无限循环
+        if(-1 == value){
+            showLog("消费者 消费完毕");
+            break;
+        }
+    }
+
+    return nullptr;
+}
+
+//模拟生产者
+void * setMethod(void *){
+    while (9){
+        showLog("setMethod");
+        showLog("请输入信息:");
+        int value;
+        cin >> value;
+
+        //输入-1 就结束无限循环
+        if(-1 == value){
+            sq.add(value); //为了让消费者获取停止条件
+            showLog("生产者 生产完毕");
+            break;
+        }
+
+        sq.add(value);
+    }
+
+    return nullptr;
+}
+
+//TODO 生成者消费者
+void ndk6::trustPthreadCont() {
+        pthread_t pthreadGet;
+        pthread_create(&pthreadGet,0,getMethod,0);
+
+        pthread_t pthreadSet;
+        pthread_create(&pthreadSet,0,setMethod,0);
+
+        pthread_join(pthreadGet,0);
+        pthread_join(pthreadSet,0);
+
+        showLog("函数执行");
 }
