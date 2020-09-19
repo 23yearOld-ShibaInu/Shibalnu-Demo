@@ -242,4 +242,5 @@ Java_com_trust_shibalnucpp_JniTest_testUnBindDog(JNIEnv *env, jobject thiz) {
         //不使用 dogClass = null  会跟隐式释放一样的后果
         dogClass = NULL;
     }
+    //TODO ndk9 2
 }
