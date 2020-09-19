@@ -162,6 +162,7 @@ Java_com_trust_shibalnucpp_JniTest_ndk9(JNIEnv *env, jobject thiz) {
     jobject student = env->AllocObject(student_class);
 
 
+    //给student 对象赋值
     sig = "(Ljava/lang/String;)V";
     jmethodID setNameId = env->GetMethodID(student_class,"setName",sig);
     jstring setNamestr = env->NewStringUTF("Trust");
@@ -174,4 +175,71 @@ Java_com_trust_shibalnucpp_JniTest_ndk9(JNIEnv *env, jobject thiz) {
     env->CallVoidMethod(person,setStudentId,student);
 
     //TODO ndk9 01  24：51
+
+
+    //回收方式 转门回收class 和jobject  内部会回收 可以不用写但是建议写上
+    env->DeleteLocalRef(person_class);
+    env->DeleteLocalRef(person);
+
+    env->DeleteLocalRef(student_class);
+    env->DeleteLocalRef(student);
+}
+
+
+
+//TODO 引用类型 +Java构造方法实例化
+
+//c++中 还是属于局部引用
+jclass dogClass;
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_trust_shibalnucpp_JniTest_testDog(JNIEnv *env, jobject thiz) {
+    //局部引用 自动回收 函数执行完就释放 建议代码写回收
+
+
+
+    //制造bug
+    if(dogClass == NULL){
+        //局部引用  与java 不同
+//TODO 1
+//        const char * dog_class_str = "com/trust/shibalnucpp/Dog";
+//        dogClass = env->FindClass(dog_class_str);
+//TODO 2
+        //解决局部引用的问题 全局引用（通过代码提升）
+        const char * dog_class_str = "com/trust/shibalnucpp/Dog";
+        jclass temp = env->FindClass(dog_class_str);
+        //提升全局引用
+        dogClass = static_cast<jclass>(env->NewGlobalRef(temp));
+    }
+
+    //出现一个问题  第一次ok  第二次崩溃
+    //第一次调用成功后  隐式释放 dogClass
+    //第二次调用的时候 dogClass 判断不为null
+    //调用NewObject的时候 dogClass 已经释放了 导致崩溃
+    //隐式释放 dogClass 不为NULL  处于悬空状态
+    //释放的式dogClass 的内存  但是dogClass本身没有释放
+    //这是局部引用的困扰
+
+
+    //Java 构造方法实例化
+    //与普通函数不一样
+    const char * method = "<init>";
+    const char * sig = "()V";
+    jmethodID dog1ID = env->GetMethodID(dogClass,method,sig);
+    env->NewObject(dogClass,dog1ID);
+}
+
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_trust_shibalnucpp_JniTest_testUnBindDog(JNIEnv *env, jobject thiz) {
+    //TODO 手动释放全局引用
+    //与全局引用对应
+    if(dogClass != NULL){
+        LOGD("释放dogClass 的引用");
+        env->DeleteGlobalRef(dogClass);
+        //不使用 dogClass = null  会跟隐式释放一样的后果
+        dogClass = NULL;
+    }
 }

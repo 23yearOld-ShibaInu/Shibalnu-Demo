@@ -40,4 +40,10 @@ class MainActivity : AppCompatActivity() {
         jniTest.ndk9()
     }
 
+    fun testDog(view: View) {
+        jniTest.testDog()
+    }
+
+    fun testUnbindDog(view: View) { jniTest.testUnBindDog() }
+
 }

@@ -25,4 +25,17 @@
         android:text="ndk9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+
+    <Button
+        android:onClick="testDog"
+        android:text="引用Dog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:onClick="testUnbindDog"
+        android:text="释放引用Dog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

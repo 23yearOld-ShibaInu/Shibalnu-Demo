@@ -9,4 +9,8 @@ public class JniTest {
     public native void putStudent(Student student);
 
     public native void ndk9();
+
+    public native void testDog();
+
+    public native void testUnBindDog();
 }
