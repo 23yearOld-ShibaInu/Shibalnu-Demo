@@ -2,6 +2,7 @@ package com.trust.shibalnucpp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,4 +47,24 @@ class MainActivity : AppCompatActivity() {
 
     fun testUnbindDog(view: View) { jniTest.testUnBindDog() }
 
+
+//    fun registerJava01(text:String){
+//
+//    }
+
+    external fun registerJava01(text:String)
+    external fun registerJava02(text:String):Int
+
+    fun register01(view: View) { registerJava01("我是动态注册")}
+    fun register02(view: View) { Dog.showLog(registerJava02("我是动态注册02").toString()) }
+    fun testThread(view: View) {jniTest.testThread() }
+
+    //TODO  ndk 9  2  24:23
+
+     fun unThread() { jniTest.unThread() }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unThread()
+    }
 }

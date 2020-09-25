@@ -242,5 +242,132 @@ Java_com_trust_shibalnucpp_JniTest_testUnBindDog(JNIEnv *env, jobject thiz) {
         //不使用 dogClass = null  会跟隐式释放一样的后果
         dogClass = NULL;
     }
-    //TODO ndk9 2
+    //TODO ndk9 2 动态注册
 }
+
+//TODO 静态注册
+//extern "C"
+//JNIEXPORT void JNICALL
+//包名Java_com_x_x_x_函数名
+
+
+//TODO 动态注册
+//源码里面都是动态注册
+
+//代码
+//typedef struct {
+//    const char* name;
+//    const char* signature;
+//    void*       fnPtr;
+//} JNINativeMethod;
+
+void register01(JNIEnv *env, jobject thiz,jstring text){
+    const char * textValue = env->GetStringUTFChars(text,NULL);
+    LOGD("register01 动态注册 success %s",textValue);
+    //回收
+    env->ReleaseStringUTFChars(text,textValue);
+}
+
+int register02(JNIEnv *env, jobject thiz,jstring text){
+    const char * textValue = env->GetStringUTFChars(text,NULL);
+    LOGD("register02 动态注册 success %s",textValue);
+    //回收
+    env->ReleaseStringUTFChars(text,textValue);
+    return 25;
+}
+
+//一次性注册很多
+//批量注册
+//灵活性高 安全
+//缺点 麻烦
+static const JNINativeMethod jniNativeMethod[]={
+        {"registerJava01","(Ljava/lang/String;)V",(void *)(register01)},
+        {"registerJava02","(Ljava/lang/String;)I",(int *)(register02)}
+};
+
+
+JavaVM * jvm;
+//自动调用  当System.loadLibrary"xxx.lib"
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *javaVm ,void *pVoid){
+    ::jvm = javaVm;
+
+    //获取 JNIEnv
+    //通过虚拟机创建 JNIEnv
+
+    JNIEnv * jniEnv = nullptr;
+    //参数2 是jni的版本  NDK 1.6是最高的  java jni有1.8
+    jint  result = jvm->GetEnv(reinterpret_cast<void **>(&jniEnv), JNI_VERSION_1_6);
+    if(result != JNI_OK){
+        return -1;//主动报错
+    }
+
+
+    const  char * mainActivityClassStr = "com/trust/shibalnucpp/MainActivity";
+    jclass mainActivityClass = jniEnv->FindClass(mainActivityClassStr);
+    jniEnv->RegisterNatives(mainActivityClass,jniNativeMethod, sizeof(jniNativeMethod) / sizeof(JNINativeMethod));
+
+    return JNI_VERSION_1_6;
+}
+
+//TODO jni 线程
+//
+void * coustomThread(void *pVoid){
+//    for (int i = 0; i <30; ++i) {
+//        LOGD("线程 :%d ",i);
+//    }
+    //必须使用env  无法跨线程
+    //动态注册获取全局的 jv java虚拟机 只有虚拟机javaVm才能跨越线程
+
+    JNIEnv * pEnv = nullptr;//新的env
+    //把native的线程 附加到JVM里
+    //可以理解为初始化env
+    int result = jvm->AttachCurrentThread(&pEnv,0);
+    if(result !=0){
+        //失败
+        return 0;
+    }
+
+    //自己的实例化的对象是不行的
+
+    //需要外部传进来
+    jobject thiz = static_cast<jobject >(pVoid);
+
+//    const char * thiz_class_str = "com/trust/shibalnucpp/JniTest";
+//    jclass this_class = pEnv->FindClass(thiz_class_str);
+    jclass this_class = pEnv->GetObjectClass(thiz);
+
+    const char * sig = "()V";
+    jmethodID updateUI = pEnv->GetMethodID(this_class,"updateUI",sig);
+
+    pEnv->CallVoidMethod(thiz,updateUI);
+
+    //解除附加到jvm上的native线程
+    jvm->DetachCurrentThread();
+
+    return 0;
+}
+
+jobject mInstance;
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_trust_shibalnucpp_JniTest_testThread(JNIEnv *env, jobject thiz) {
+
+    mInstance = env->NewGlobalRef(thiz);
+    pthread_t pthreadID;
+    //这样传的话应该是悬空指针
+    //pthread_create(&pthreadID,0,coustomThread,thiz);
+    pthread_create(&pthreadID,0,coustomThread,mInstance);
+    pthread_join(pthreadID,0);
+}
+
+//释放全局
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_trust_shibalnucpp_JniTest_unThread(JNIEnv *env, jobject thiz) {
+    if(NULL != mInstance){
+        env->DeleteGlobalRef(mInstance);
+        mInstance = NULL;
+    }
+}
+
