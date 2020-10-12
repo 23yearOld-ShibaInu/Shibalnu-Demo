@@ -14,20 +14,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val job = Job()
-        CoroutineScope(job) .launch {
-                Test()
+        val coroutineScope = CoroutineScope(job)
+        coroutineScope .launch {
+            Test("1")
         }
+
+        coroutineScope .launch {
+            Test("2")
+        }
+
+        Log.d("lhh","coroutineScope code end")
+        job.cancel()
     }
 
 
-    suspend fun Test(){
+    suspend fun Test(msg:String){
 
         val s = suspendCoroutine<String> {
             val block = {msg:String->
                 it.resume(msg)
             }
             Thread.sleep(1000 *3)
-            block("我是返回值")
+            block("我是返回值$msg")
 
         }
 
