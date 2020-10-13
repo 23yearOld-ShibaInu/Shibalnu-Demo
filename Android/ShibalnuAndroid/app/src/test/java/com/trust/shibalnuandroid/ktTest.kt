@@ -34,6 +34,7 @@ object HigherOrderFunction{
 
     fun minus(num1: Int,num2: Int):Int{
         return num1 - num2
+
     }
 
 
@@ -47,4 +48,8 @@ object HigherOrderFunction{
         return this
     }
 
+
+    fun Any.logp(msg:String = ""){
+        System.out.println("$msg ${this}")
+    }
 }
