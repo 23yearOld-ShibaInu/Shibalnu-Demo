@@ -3,6 +3,8 @@ package com.trust.shibalnuandroid
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
 import java.util.concurrent.Delayed
 import kotlin.concurrent.thread
@@ -25,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("lhh","coroutineScope code end")
         job.cancel()
+
+
     }
 
 
@@ -41,4 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("lhh","sss:${s}")
     }
+
+
+
 }

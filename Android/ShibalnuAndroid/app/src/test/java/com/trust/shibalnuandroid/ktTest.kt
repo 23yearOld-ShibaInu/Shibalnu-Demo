@@ -38,6 +38,7 @@ object HigherOrderFunction{
 
     fun minus(num1: Int,num2: Int):Int{
         return num1 - num2
+
     }
 
 
@@ -191,3 +192,7 @@ fun <T> T.build(block:T.() -> Unit):T{
     return this
 }
 
+
+    fun Any.logp(msg:String = ""){
+        System.out.println("$msg ${this}")
+    }

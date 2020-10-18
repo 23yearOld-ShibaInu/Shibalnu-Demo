@@ -1,7 +1,10 @@
 package com.trust.shibalnuandroid
 
+import com.trust.shibalnuandroid.HigherOrderFunction.logp
 import kotlinx.coroutines.*
 import org.junit.Test
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class KtTestXC {
 
@@ -104,6 +107,30 @@ class KtTestXC {
             }
             println("withContext:${reuslt+reuslt2}")
             println("执行结果 : ${System.currentTimeMillis() - currentTimeMillis}")
+        }
+    }
+
+
+    @Test
+     fun test08(){
+        runBlocking {
+
+            Thread.currentThread().name.logp("runBlocking")
+                launch {
+                    request().logp()
+                    Thread.currentThread().name.logp("launch")
+                }
+            "request 117line".logp()
+        }
+
+    }
+
+
+    suspend fun request():String{
+        return suspendCoroutine { continuation ->
+            Thread.sleep(2000)
+            Thread.currentThread().name.logp("request")
+            continuation.resume("我是 request result")
         }
     }
 
