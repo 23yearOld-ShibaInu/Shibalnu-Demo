@@ -18,5 +18,9 @@ LOCAL_MODULE := MyLoginJar
 LOCAL_SRC_FILES := main/cpp/Login.c \
 main/cpp/Reigster.c
 
+#构建静态库
+#include $(BUILD_STATIC_LIBRARY)
+
 #构建动态库
 include $(BUILD_SHARED_LIBRARY)
+
