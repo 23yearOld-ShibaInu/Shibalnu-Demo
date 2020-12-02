@@ -11,12 +11,13 @@ open class ShibalnuCmdConfig(private val manger:ShibalnuAppManger) {
         //需要先暂停其他指令 等该等级指令有结果了 再恢复其他指令  如果有同等级指令 同等级不会暂停只会暂停比该指令等级低的指令集  同等级按照顺序执行
         const val PERMISSION_WAIT_OTHER_DO_THIS_AFTER_RESUME_OTHER = 2
 
+        //系统指令
+        const val PERMISSIOON_SYS = 3
 
         //目前指令集最高等级 可以自定义比该等级更高的优先级 需要修改CONFIG_PERMISSION_PRIORITY 参数来调节最高等级上限
         const val PERMISSION_PRIORITY = 200
 
-        //系统指令
-        const val PERMISSIOON_SYS = 3
+
 
         /**
          * CONFIG_PERMISSION_PRIORITY
@@ -95,8 +96,6 @@ open class ShibalnuCmdConfig(private val manger:ShibalnuAppManger) {
 
 
     fun checkCmd(cmd:ShibalnuCmdBean):Boolean{
-
-
-        return true
+        return cmd.permission != PERMISSIOON_SYS
     }
 }

@@ -14,10 +14,13 @@ const val CMD_START = 1
 const val CMD_STOP = 2
 const val CMD_PAUSE = 3
 const val CMD_RESTART = 4
+//当前已经有优先级最高的指令无法添加
 const val CMD_NO_DO = 5
 const val CMD_TIME_OUT = 6
 const val CMD_END = 7
 const val CMD_ERROR = 8
+//当前指令添加失败
+const val CMD_ADD_ERROR = 9
 
 
 

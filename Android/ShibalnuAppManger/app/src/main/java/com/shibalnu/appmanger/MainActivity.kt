@@ -72,23 +72,25 @@ class MainActivity : AppCompatActivity() {
             CMD_TYPE_INTERNET -> { "网络" }
             CMD_TYPE_DEVICE_ANDROID_BUTTON -> { "仪表Android按钮" }
             CMD_TYPE_DEVICE_SERIAL_PORT -> { "串口" }
-            else -> { "未知:${cmdBean.cmdType}" }
+            else -> { "未知cmd类型:${cmdBean.cmdType}" }
         }
 
         val permission = when(cmdBean.permission){
             ShibalnuCmdConfig.PERMISSION_NOMORL ->{ "普通权限" }
             ShibalnuCmdConfig.PERMISSION_WAIT_OTHER_DO_THIS_AFTER_RESUME_OTHER ->{ "一般权限" }
             ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY ->{ "最高权限" }
+            ShibalnuCmdConfig.PERMISSIOON_SYS ->{ "添加失败" }
             else -> { "未知权限:${cmdBean.permission}" }
         }
 
         val result = when (cmdBean.status) {
             CMD_END -> { "指令执行完毕" }
             CMD_START -> { "指令执行开始" }
-            CMD_NO_DO -> { "当前已经有高级别的指令" }
+            CMD_NO_DO -> { "当前已经有优先级最高的指令无法添加" }
             CMD_STOP -> { "指令停止｜中断" }
             CMD_ERROR -> { "指令失败" }
             CMD_TIME_OUT -> { "指令超时" }
+            CMD_ADD_ERROR -> { "添加指令失败" }
             else -> { " 未知的status:${cmdBean.status}" }
         }
         val s = "$user |$cmdType | $permission |$result"
@@ -121,5 +123,9 @@ class MainActivity : AppCompatActivity() {
     fun stopCmdList(view: View) {
         mShibalnuAppManger.stopAllCmd()
         setText("清空指令集成功")
+    }
+
+    fun addErrorBtn(view: View) {
+        mShibalnuAppManger.addCmd(ShibalnuCmdBean(permission = ShibalnuCmdConfig.PERMISSIOON_SYS,cmd = 22){ getReuslt(REQUEST_TAG,it) })
     }
 }

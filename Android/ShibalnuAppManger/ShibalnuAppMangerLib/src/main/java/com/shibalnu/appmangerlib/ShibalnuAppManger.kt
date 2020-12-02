@@ -48,8 +48,14 @@ class ShibalnuAppManger {
 
     private fun check(cmd:ShibalnuCmdBean):Boolean{
         return if (cmdList.isNullOrEmpty()) {
-            startCmd(cmd)
-            true
+            if (mShibalnuCmdConfig.checkCmd(cmd)) {
+                startCmd(cmd)
+                true
+            }else{
+                addError(cmd)
+                false
+            }
+
         }else{
             if (!getCmdListIsHaveMaxPermission()) {
                 if (cmd.permission == ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY) {
@@ -61,7 +67,7 @@ class ShibalnuAppManger {
                         startCmd(cmd)
                         true
                     }else{
-                        noAddCmd(cmd)
+                        addError(cmd)
                         false
                     }
                 }
@@ -92,6 +98,7 @@ class ShibalnuAppManger {
     }
 
     private fun noAddCmd(cmd: ShibalnuCmdBean) = changeCmd(cmd.apply { status = CMD_NO_DO })
+    private fun addError(cmd:ShibalnuCmdBean) = changeCmd(cmd.apply { status = CMD_ADD_ERROR })
 
     private fun timeOutCmd(cmd:ShibalnuCmdBean) = cmdList.removeAll(changeCmd(cmd.apply { status = CMD_TIME_OUT }))
 
