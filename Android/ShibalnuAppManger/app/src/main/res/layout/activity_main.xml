@@ -80,9 +80,18 @@
         android:layout_height="wrap_content"
         android:onClick="internetMaxPermissionCmd"/>
 
+    <Button
+        android:onClick="closeInternetMaxPermissionCmd"
+        android:id="@+id/close_internet_max_permission_btn"
+        app:layout_constraintLeft_toRightOf="@+id/internet_wait_btn"
+        app:layout_constraintTop_toBottomOf="@+id/internet_max_permission_btn"
+        android:text="网络严重指令关"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <View
         android:id="@+id/line_2"
-        app:layout_constraintTop_toBottomOf="@+id/internet_max_permission_btn"
+        app:layout_constraintTop_toBottomOf="@+id/close_internet_max_permission_btn"
         android:background="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
@@ -116,10 +125,7 @@
         android:layout_height="wrap_content"
         android:onClick="serportMaxPermissionCmd"/>
 
-    <Button
-        app:layout_constraintTop_toBottomOf="@+id/serport_max_permission_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+
 
     <View
         android:id="@+id/line_3"

@@ -95,6 +95,9 @@ open class ShibalnuCmdConfig(private val manger:ShibalnuAppManger) {
     }
 
 
+
+
+
     fun checkCmd(cmd:ShibalnuCmdBean):Boolean{
         return cmd.permission != PERMISSIOON_SYS
     }

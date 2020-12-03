@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initShibalnuConfig()
-
         mShibalnuAppManger.addCmdCallBack(maxCmdCallBack)
         test_tv.movementMethod = ScrollingMovementMethod.getInstance();
     }
@@ -45,12 +44,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun bleNomorlCmd(view: View) { mShibalnuAppManger.addBleCmd(ShibalnuCmdConfig.PERMISSION_NOMORL,ShibalnuCmdConfig.BS_CMD_VIDEO,ShibalnuCmdConfig.BS_ACTION_OPEN) { getReuslt(REQUEST_TAG,it) } }
+    fun bleNomorlCmd(view: View) {
+        mShibalnuAppManger.addCmd(ShibalnuCmdBean(ShibalnuCmdConfig.PERMISSION_NOMORL,CMD_TYPE_BLE,ShibalnuCmdConfig.BS_CMD_VIDEO,ShibalnuCmdConfig.BS_ACTION_OPEN,block = { getReuslt(REQUEST_TAG,it) }))
+    }
     fun bleWaitCmd(view: View) { mShibalnuAppManger.addBleCmd(ShibalnuCmdConfig.PERMISSION_WAIT_OTHER_DO_THIS_AFTER_RESUME_OTHER,2,2) { getReuslt(REQUEST_TAG,it) } }
     fun bleMaxPermissionCmd(view: View) { mShibalnuAppManger.addBleCmd(ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY,3,3) { getReuslt(REQUEST_TAG,it) } }
     fun internetNomorlCmd(view: View) { mShibalnuAppManger.addInternetCmd(ShibalnuCmdConfig.PERMISSION_NOMORL,4,4) { getReuslt(REQUEST_TAG,it) } }
     fun internetWaitCmd(view: View) { mShibalnuAppManger.addInternetCmd(ShibalnuCmdConfig.PERMISSION_WAIT_OTHER_DO_THIS_AFTER_RESUME_OTHER,5,5) { getReuslt(REQUEST_TAG,it) } }
-    fun internetMaxPermissionCmd(view: View) { mShibalnuAppManger.addInternetCmd(ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY,6,6) { getReuslt(REQUEST_TAG,it) } }
+    fun internetMaxPermissionCmd(view: View) {
+
+    }
+    fun closeInternetMaxPermissionCmd(view: View) {
+    }
     fun serportNomorlCmd(view: View) { mShibalnuAppManger.addSerialPortCmd(ShibalnuCmdConfig.PERMISSION_NOMORL,7,7) { getReuslt(REQUEST_TAG,it) } }
     fun serportWaitCmd(view: View) { mShibalnuAppManger.addSerialPortCmd(ShibalnuCmdConfig.PERMISSION_WAIT_OTHER_DO_THIS_AFTER_RESUME_OTHER,8,8) { getReuslt(REQUEST_TAG,it) } }
     fun serportMaxPermissionCmd(view: View) { mShibalnuAppManger.addSerialPortCmd(ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY,9,9) { getReuslt(REQUEST_TAG,it) } }
@@ -94,12 +99,11 @@ class MainActivity : AppCompatActivity() {
             else -> { " 未知的status:${cmdBean.status}" }
         }
         val s = "$user |$cmdType | $permission |$result"
-        s.mangerLogd()
         if (isShowTx) { setText(s) }
         return s
     }
 
-    fun Any.mangerLogd(msg:String = "") = Log.d("BsTrust","$msg|$this")
+
     fun clearLog(view: View) {
         strList.clear()
         setText(null)
@@ -128,4 +132,9 @@ class MainActivity : AppCompatActivity() {
     fun addErrorBtn(view: View) {
         mShibalnuAppManger.addCmd(ShibalnuCmdBean(permission = ShibalnuCmdConfig.PERMISSIOON_SYS,cmd = 22){ getReuslt(REQUEST_TAG,it) })
     }
+
+
 }
+
+
+

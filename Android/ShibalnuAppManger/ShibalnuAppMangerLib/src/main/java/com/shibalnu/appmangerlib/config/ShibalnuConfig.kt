@@ -35,6 +35,12 @@ const val CMD_TYPE_DEVICE_ANDROID_BUTTON = 303
 const val CMD_TYPE_DEVICE_SERIAL_PORT = 304
 
 
+//有同种CMD 不同action
+const val CHECK_SAME_PERMISSION_DIFFERENT_ACTION = 1
+//有同种CMD 相同action
+const val CHECK_SAME_PERMISSION_SAME_ACTION = 2
+//不同CMD
+const val CHECK_DIFFERENT_PERMISSION_SAME = 3
 
 lateinit var mShibalnuCmdConfig:ShibalnuCmdConfig
     private set

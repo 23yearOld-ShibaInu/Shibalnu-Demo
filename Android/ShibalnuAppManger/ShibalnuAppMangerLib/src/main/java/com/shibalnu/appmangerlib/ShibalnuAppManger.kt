@@ -40,13 +40,8 @@ class ShibalnuAppManger {
 
 
 
-
-
-
-
-
-
     private fun check(cmd:ShibalnuCmdBean):Boolean{
+        "添加的cmd :$cmd".ShibalnuLogd()
         return if (cmdList.isNullOrEmpty()) {
             if (mShibalnuCmdConfig.checkCmd(cmd)) {
                 startCmd(cmd)
@@ -72,8 +67,25 @@ class ShibalnuAppManger {
                     }
                 }
             }else{
-                noAddCmd(cmd)
-                false
+                when (checkPermission(cmd)) {
+                    //有同种CMD 不同action
+                    //停止指令集的cmd
+                    CHECK_SAME_PERMISSION_DIFFERENT_ACTION -> {
+                        getCmdList().find { it.cmd== cmd.cmd }?.let { endCmdCallBack(it) }
+                        true
+                    }
+                    //有同种CMD 相同action
+                    //无法添加
+                    CHECK_SAME_PERMISSION_SAME_ACTION -> {
+                        noAddCmd(cmd)
+                        false
+                    }
+                    //无法添加
+                    else -> {
+                        noAddCmd(cmd)
+                        false
+                    }
+                }
             }
         }
     }
@@ -171,4 +183,19 @@ class ShibalnuAppManger {
 
     private fun getCmdListIsHaveMaxPermission() = !cmdList.none { it.permission == ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY }
 
+    private fun checkPermission(cmd:ShibalnuCmdBean):Int{
+        return if (cmd.permission == ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY) {
+            "开始检查".ShibalnuLogd()
+            getCmdList().find { it.cmd == cmd.cmd  }?.let {
+                "检查的 cmd:${cmd}".ShibalnuLogd()
+                "数据集中的 cmd:$it".ShibalnuLogd()
+                if (it.action == cmd.action) {
+                    CHECK_SAME_PERMISSION_SAME_ACTION
+                }else{
+                    CHECK_SAME_PERMISSION_DIFFERENT_ACTION
+                }
+            }?:CHECK_DIFFERENT_PERMISSION_SAME
+        }else{ CHECK_DIFFERENT_PERMISSION_SAME }
+
+    }
 }
