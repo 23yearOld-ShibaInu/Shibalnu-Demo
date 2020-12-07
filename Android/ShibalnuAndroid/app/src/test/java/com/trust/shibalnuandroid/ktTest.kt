@@ -1,8 +1,6 @@
 package com.trust.shibalnuandroid
 
-import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import org.junit.Test
 import kotlin.text.StringBuilder
 
@@ -179,7 +177,6 @@ class ktTest{
 
 
 }
-fun Any.logd(msg:String = "") = println("$msg  $this")
 
 fun SharedPreferences.trustOpen(block:SharedPreferences.Editor.()->Unit){
     val edit = edit()
@@ -193,6 +190,4 @@ fun <T> T.build(block:T.() -> Unit):T{
 }
 
 
-    fun Any.logp(msg:String = ""){
-        System.out.println("$msg ${this}")
-    }
+

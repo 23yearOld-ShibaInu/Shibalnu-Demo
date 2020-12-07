@@ -1,6 +1,5 @@
 package com.trust.shibalnuandroid
 
-import com.trust.shibalnuandroid.HigherOrderFunction.logp
 import kotlinx.coroutines.*
 import org.junit.Test
 import kotlin.coroutines.resume
@@ -115,12 +114,12 @@ class KtTestXC {
      fun test08(){
         runBlocking {
 
-            Thread.currentThread().name.logp("runBlocking")
+            Thread.currentThread().name.BsLogd("runBlocking")
                 launch {
-                    request().logp()
-                    Thread.currentThread().name.logp("launch")
+                    request().BsLogd()
+                    Thread.currentThread().name.BsLogd("launch")
                 }
-            "request 117line".logp()
+            "request 117line".BsLogd()
         }
 
     }
@@ -129,7 +128,7 @@ class KtTestXC {
     suspend fun request():String{
         return suspendCoroutine { continuation ->
             Thread.sleep(2000)
-            Thread.currentThread().name.logp("request")
+            Thread.currentThread().name.BsLogd("request")
             continuation.resume("我是 request result")
         }
     }
@@ -148,4 +147,11 @@ class KtTestXC {
         println("bar 4")
     }
 
+
+
+
+    @Test
+    fun test09(){
+
+    }
 }

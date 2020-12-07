@@ -46,8 +46,8 @@ lateinit var mShibalnuCmdConfig:ShibalnuCmdConfig
     private set
 lateinit var mShibalnuAppManger:ShibalnuAppManger
     private set
-fun initShibalnuConfig(){
+fun initShibalnuConfig(shibalnuCmdConfig:ShibalnuCmdConfig = ShibalnuCmdConfig()){
     mShibalnuAppManger = ShibalnuAppManger.getInstance()
-    mShibalnuCmdConfig = ShibalnuCmdConfig(mShibalnuAppManger)
+    mShibalnuCmdConfig = shibalnuCmdConfig
 }
 

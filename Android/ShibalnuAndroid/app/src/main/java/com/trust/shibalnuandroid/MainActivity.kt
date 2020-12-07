@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.trust.shibalnuandroid.debug.ShibalnuDebug
 import kotlinx.coroutines.*
 import java.util.concurrent.Delayed
 import kotlin.concurrent.thread
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val job = Job()
         val coroutineScope = CoroutineScope(job)
+
+
         coroutineScope .launch {
             Test("1")
         }
@@ -24,9 +27,77 @@ class MainActivity : AppCompatActivity() {
         coroutineScope .launch {
             Test("2")
         }
+        val instance = ShibalnuDebug.getInstance()
+        instance.initConfig()
+        instance.DebugStart()
+
+
+        val currentTimeMillis = System.currentTimeMillis()
+        waitTime(3000){
+            "waitTime success".logd()
+            (System.currentTimeMillis() - currentTimeMillis).logd("耗时：")
+        }
 
         Log.d("lhh","coroutineScope code end")
-        job.cancel()
+
+
+        coroutineScope.launch {
+
+            launch {
+                val currentTimeMillis = System.currentTimeMillis()
+                val reuslt = suspendCoroutine<String> {
+                    var i = 0
+                    for (x in 0..10){
+                        Thread.sleep(1000)
+                        i = x
+                    }
+                    it.resume("我是 i:$i")
+                }
+
+                val result2 = suspendCoroutine<String>{
+                    var j = 0
+                    for (x in 0..4){
+                        Thread.sleep(1000)
+                        j = x
+                    }
+                    it.resume("我是 j:$j")
+                }
+
+                Log.d("lhh","$reuslt   $result2 " )
+                Log.d("lhh","花费时间 ${System.currentTimeMillis() - currentTimeMillis}" )
+
+            }
+
+
+            launch {
+                val start = System.currentTimeMillis()
+                val as1 = async {
+                    var i = 0
+                    for (x in 0..5){
+                        i = x
+                        delay(1000)
+                    }
+                    i
+                }.await()
+
+
+                val as2 = async {
+                    var i = 0
+                    for (x in 0..5){
+                        i = x
+                        delay(1000)
+                    }
+                    i
+                }.await()
+
+                Log.d("lhh","as :  $as1   $as2 " )
+                Log.d("lhh","as :  ${ System.currentTimeMillis() - start}" )
+
+
+            }
+        }
+
+//        job.cancel()
 
 
     }
@@ -45,7 +116,15 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("lhh","sss:${s}")
     }
-
-
-
 }
+
+fun Any.logd(msg:String = "") = Log.d("Mr_Li","$msg | $this")
+
+fun waitTime(times:Long,block:()->Unit){
+    val coroutineScope = CoroutineScope(Job())
+    coroutineScope.async {
+        delay(times)
+        block()
+    }
+}
+

@@ -1,0 +1,3 @@
+include ':ShibalnuAppMangerLib'
+include ':app'
+rootProject.name = "ShibalnuAppManger"

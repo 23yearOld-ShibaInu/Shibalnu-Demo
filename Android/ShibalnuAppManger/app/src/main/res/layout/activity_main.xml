@@ -13,179 +13,223 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
 
+  <ScrollView
+      android:layout_marginTop="200dp"
+      app:layout_constraintTop_toTopOf="parent"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+              <Button
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintLeft_toLeftOf="parent"
+                  android:id="@+id/ble_nomorl_cmd_btn"
+                  android:text="ble普通指令"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="bleNomorlCmd"
+                  />
+
+              <Button
+                  app:layout_constraintTop_toTopOf="parent"
+                  android:id="@+id/ble_wait_cmd_btn"
+                  app:layout_constraintLeft_toRightOf="@+id/ble_nomorl_cmd_btn"
+                  android:text="ble一般指令"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="bleWaitCmd"/>
+
+              <Button
+                  app:layout_constraintTop_toTopOf="parent"
+                  android:id="@+id/ble_max_permission_btn"
+                  app:layout_constraintLeft_toRightOf="@+id/ble_wait_cmd_btn"
+                  android:text="ble严重指令"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="bleMaxPermissionCmd"/>
 
 
-    <Button
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:id="@+id/ble_nomorl_cmd_btn"
-        app:layout_constraintTop_toBottomOf="@+id/test_tv"
-        android:text="ble普通指令"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="bleNomorlCmd"
-        />
-
-    <Button
-        android:id="@+id/ble_wait_cmd_btn"
-        app:layout_constraintLeft_toRightOf="@+id/ble_nomorl_cmd_btn"
-        app:layout_constraintTop_toBottomOf="@+id/test_tv"
-        android:text="ble一般指令"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="bleWaitCmd"/>
-
-    <Button
-        android:id="@+id/ble_max_permission_btn"
-        app:layout_constraintLeft_toRightOf="@+id/ble_wait_cmd_btn"
-        app:layout_constraintTop_toBottomOf="@+id/test_tv"
-        android:text="ble严重指令"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="bleMaxPermissionCmd"/>
+              <View
+                  android:id="@+id/line_1"
+                  app:layout_constraintTop_toBottomOf="@+id/ble_max_permission_btn"
+                  android:background="@color/colorAccent"
+                  android:layout_width="match_parent"
+                  android:layout_height="1dp"/>
 
 
-    <View
-        android:id="@+id/line_1"
-        app:layout_constraintTop_toBottomOf="@+id/ble_max_permission_btn"
-        android:background="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+              <Button
+                  android:id="@+id/internet_nomorl_btn"
+                  app:layout_constraintLeft_toLeftOf="parent"
+                  app:layout_constraintTop_toBottomOf="@+id/line_1"
+                  android:text="网络普通指令"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="internetNomorlCmd"/>
 
 
-    <Button
-        android:id="@+id/internet_nomorl_btn"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line_1"
-        android:text="网络普通指令"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="internetNomorlCmd"/>
+              <Button
+                  android:id="@+id/internet_wait_btn"
+                  app:layout_constraintLeft_toRightOf="@+id/internet_nomorl_btn"
+                  app:layout_constraintTop_toBottomOf="@+id/line_1"
+                  android:text="网络一般指令"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="internetWaitCmd"/>
+
+              <Button
+                  android:id="@+id/internet_max_permission_btn"
+                  app:layout_constraintLeft_toRightOf="@+id/internet_wait_btn"
+                  app:layout_constraintTop_toBottomOf="@+id/line_1"
+                  android:text="网络严重指令"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="internetMaxPermissionCmd"/>
+
+              <Button
+                  android:onClick="closeInternetMaxPermissionCmd"
+                  android:id="@+id/close_internet_max_permission_btn"
+                  app:layout_constraintLeft_toRightOf="@+id/internet_wait_btn"
+                  app:layout_constraintTop_toBottomOf="@+id/internet_max_permission_btn"
+                  android:text="网络严重指令关"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+              <View
+                  android:id="@+id/line_2"
+                  app:layout_constraintTop_toBottomOf="@+id/close_internet_max_permission_btn"
+                  android:background="@color/colorAccent"
+                  android:layout_width="match_parent"
+                  android:layout_height="1dp"/>
 
 
-    <Button
-        android:id="@+id/internet_wait_btn"
-        app:layout_constraintLeft_toRightOf="@+id/internet_nomorl_btn"
-        app:layout_constraintTop_toBottomOf="@+id/line_1"
-        android:text="网络一般指令"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="internetWaitCmd"/>
-
-    <Button
-        android:id="@+id/internet_max_permission_btn"
-        app:layout_constraintLeft_toRightOf="@+id/internet_wait_btn"
-        app:layout_constraintTop_toBottomOf="@+id/line_1"
-        android:text="网络严重指令"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="internetMaxPermissionCmd"/>
-
-    <Button
-        android:onClick="closeInternetMaxPermissionCmd"
-        android:id="@+id/close_internet_max_permission_btn"
-        app:layout_constraintLeft_toRightOf="@+id/internet_wait_btn"
-        app:layout_constraintTop_toBottomOf="@+id/internet_max_permission_btn"
-        android:text="网络严重指令关"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <View
-        android:id="@+id/line_2"
-        app:layout_constraintTop_toBottomOf="@+id/close_internet_max_permission_btn"
-        android:background="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+              <Button
+                  android:id="@+id/serport_nomol_btn"
+                  app:layout_constraintLeft_toLeftOf="parent"
+                  app:layout_constraintTop_toBottomOf="@+id/line_2"
+                  android:text="串口普通指令"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="serportNomorlCmd"/>
 
 
-    <Button
-        android:id="@+id/serport_nomol_btn"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line_2"
-        android:text="串口普通指令"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="serportNomorlCmd"/>
+              <Button
+                  android:text="串口一般指令"
+                  android:id="@+id/serport_wait_btn"
+                  app:layout_constraintLeft_toRightOf="@+id/serport_nomol_btn"
+                  app:layout_constraintTop_toBottomOf="@+id/line_2"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="serportWaitCmd"/>
 
-
-    <Button
-        android:text="串口一般指令"
-        android:id="@+id/serport_wait_btn"
-        app:layout_constraintLeft_toRightOf="@+id/serport_nomol_btn"
-        app:layout_constraintTop_toBottomOf="@+id/line_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="serportWaitCmd"/>
-
-    <Button
-        app:layout_constraintLeft_toRightOf="@+id/serport_wait_btn"
-        app:layout_constraintTop_toBottomOf="@+id/line_2"
-        android:id="@+id/serport_max_permission_btn"
-        android:text="串口严重指令"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="serportMaxPermissionCmd"/>
+              <Button
+                  app:layout_constraintLeft_toRightOf="@+id/serport_wait_btn"
+                  app:layout_constraintTop_toBottomOf="@+id/line_2"
+                  android:id="@+id/serport_max_permission_btn"
+                  android:text="串口严重指令"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="serportMaxPermissionCmd"/>
 
 
 
-    <View
-        android:id="@+id/line_3"
-        app:layout_constraintTop_toBottomOf="@+id/serport_max_permission_btn"
-        android:background="@color/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+              <View
+                  android:id="@+id/line_3"
+                  app:layout_constraintTop_toBottomOf="@+id/serport_max_permission_btn"
+                  android:background="@color/colorPrimary"
+                  android:layout_width="match_parent"
+                  android:layout_height="1dp"/>
 
-    <Button
-        android:id="@+id/end_max_btn"
-        app:layout_constraintTop_toBottomOf="@+id/line_3"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:text="结束max指令"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="endMaxCmd"/>
-
-
-    <Button
-        android:onClick="addErrorBtn"
-        app:layout_constraintLeft_toRightOf="@+id/end_max_btn"
-        app:layout_constraintTop_toBottomOf="@+id/line_3"
-        android:text="添加失败指令"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+              <Button
+                  android:id="@+id/end_max_btn"
+                  app:layout_constraintTop_toBottomOf="@+id/line_3"
+                  app:layout_constraintLeft_toLeftOf="parent"
+                  android:text="结束max指令"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="endMaxCmd"/>
 
 
-    <View
-        android:id="@+id/line_4"
-        app:layout_constraintTop_toBottomOf="@+id/end_max_btn"
-        android:background="@color/colorPrimaryDark"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-
-    <Button
-        android:id="@+id/clear_log"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line_4"
-        android:text="清空log"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="clearLog"/>
+              <Button
+                  android:onClick="addErrorBtn"
+                  app:layout_constraintLeft_toRightOf="@+id/end_max_btn"
+                  app:layout_constraintTop_toBottomOf="@+id/line_3"
+                  android:text="添加失败指令"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
 
 
-    <Button
-        android:id="@+id/find_cmd_list"
-        app:layout_constraintLeft_toRightOf="@+id/clear_log"
-        app:layout_constraintTop_toBottomOf="@+id/line_4"
-        android:text="查询当前指令集"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="findCmdList"/>
+              <View
+                  android:id="@+id/line_4"
+                  app:layout_constraintTop_toBottomOf="@+id/end_max_btn"
+                  android:background="@color/colorPrimaryDark"
+                  android:layout_width="match_parent"
+                  android:layout_height="1dp"/>
 
-    <Button
-        android:id="@+id/stop_cmd_list"
-        app:layout_constraintLeft_toRightOf="@+id/find_cmd_list"
-        app:layout_constraintTop_toBottomOf="@+id/line_4"
-        android:text="停止当前指令集"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="stopCmdList"/>
+              <Button
+                  android:id="@+id/clear_log"
+                  app:layout_constraintLeft_toLeftOf="parent"
+                  app:layout_constraintTop_toBottomOf="@+id/line_4"
+                  android:text="清空log"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="clearLog"/>
+
+
+              <Button
+                  android:id="@+id/find_cmd_list"
+                  app:layout_constraintLeft_toRightOf="@+id/clear_log"
+                  app:layout_constraintTop_toBottomOf="@+id/line_4"
+                  android:text="查询当前指令集"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="findCmdList"/>
+
+              <Button
+                  android:id="@+id/stop_cmd_list"
+                  app:layout_constraintLeft_toRightOf="@+id/find_cmd_list"
+                  app:layout_constraintTop_toBottomOf="@+id/line_4"
+                  android:text="停止当前指令集"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="stopCmdList"/>
+
+
+              <View
+                  app:layout_constraintTop_toBottomOf="@+id/stop_cmd_list"
+                  android:id="@+id/line_5"
+                  android:background="@color/colorAccent"
+                  android:layout_width="match_parent"
+                  android:layout_height="1dp"/>
+
+              <Button
+                  app:layout_constraintTop_toBottomOf="@+id/line_5"
+                  app:layout_constraintLeft_toLeftOf="parent"
+                  android:id="@+id/max_cmds_btn"
+                  android:text="下发max指令集"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="sendMaxCmds"/>
+
+              <Button
+                  android:id="@+id/clear_max"
+                  app:layout_constraintLeft_toRightOf="@+id/max_cmds_btn"
+                  app:layout_constraintTop_toBottomOf="@+id/line_5"
+                  android:text="结束max子指令"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="closeMaxCmds"/>
+
+          </androidx.constraintlayout.widget.ConstraintLayout>
+
+      </LinearLayout>
+  </ScrollView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.shibalnu.appmangerlib
 import com.shibalnu.appmangerlib.bean.ShibalnuCmdBean
 import com.shibalnu.appmangerlib.bean.ShibalnuCmdCallBackBean
 import com.shibalnu.appmangerlib.config.*
+import com.shibalnu.appmangerlib.config.ShibalnuCmdConfig.Companion.CONFIG_PERMISSION_PRIORITY
 
 class ShibalnuAppManger {
     companion object{
@@ -82,7 +83,12 @@ class ShibalnuAppManger {
                     }
                     //无法添加
                     else -> {
-                        noAddCmd(cmd)
+                        if (cmd.parentCmd == getMaxPernissionCmd()!!.cmd) {
+                            //最高等级指令附属指令
+                            startCmd(cmd)
+                        }else{
+                            noAddCmd(cmd)
+                        }
                         false
                     }
                 }
@@ -181,7 +187,8 @@ class ShibalnuAppManger {
     fun getCmdList() = cmdList
 
 
-    private fun getCmdListIsHaveMaxPermission() = !cmdList.none { it.permission == ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY }
+    private fun getCmdListIsHaveMaxPermission() = !cmdList.none { it.permission == CONFIG_PERMISSION_PRIORITY }
+    private fun getMaxPernissionCmd() = cmdList.find { it.permission == CONFIG_PERMISSION_PRIORITY }
 
     private fun checkPermission(cmd:ShibalnuCmdBean):Int{
         return if (cmd.permission == ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY) {
