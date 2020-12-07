@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/Cpp.dir/main.cpp.o CMakeFiles/Cpp.dir/main.c.o CMakeFiles/Cpp.dir/ndk6/ndk6.cpp.o  -o Cpp 
