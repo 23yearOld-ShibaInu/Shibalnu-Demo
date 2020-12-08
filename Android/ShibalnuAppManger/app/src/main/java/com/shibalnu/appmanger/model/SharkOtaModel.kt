@@ -67,7 +67,7 @@ class SharkOtaModel {
                     }
                 }
             }
-            "123123123123123123".ShibalnuLogd()
+
 
         }
 

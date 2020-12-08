@@ -45,25 +45,25 @@ class ShibalnuAppManger {
         "添加的cmd :$cmd".ShibalnuLogd()
         return if (cmdList.isNullOrEmpty()) {
             if (mShibalnuCmdConfig.checkCmd(cmd)) {
-                startCmd(cmd)
+                requestStartCmd(cmd)
                 true
             }else{
-                addError(cmd)
+                requestAddError(cmd)
                 false
             }
 
         }else{
             if (!getCmdListIsHaveMaxPermission()) {
-                if (cmd.permission == ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY) {
+                if (cmd.permission == CONFIG_PERMISSION_PRIORITY) {
                     stopOtherThanPriority()
-                    startCmd(cmd)
+                    requestStartCmd(cmd)
                     true
                 }else{
                     if (mShibalnuCmdConfig.checkCmd(cmd)) {
-                        startCmd(cmd)
+                        requestStartCmd(cmd)
                         true
                     }else{
-                        addError(cmd)
+                        requestAddError(cmd)
                         false
                     }
                 }
@@ -78,16 +78,16 @@ class ShibalnuAppManger {
                     //有同种CMD 相同action
                     //无法添加
                     CHECK_SAME_PERMISSION_SAME_ACTION -> {
-                        noAddCmd(cmd)
+                        requestNoAddCmd(cmd)
                         false
                     }
                     //无法添加
                     else -> {
                         if (cmd.parentCmd == getMaxPernissionCmd()!!.cmd) {
                             //最高等级指令附属指令
-                            startCmd(cmd)
+                            requestStartCmd(cmd)
                         }else{
-                            noAddCmd(cmd)
+                            requestNoAddCmd(cmd)
                         }
                         false
                     }
@@ -98,29 +98,29 @@ class ShibalnuAppManger {
 
 
     private fun stopOtherThanPriority(){
-        val filter = cmdList.filter { it.permission != ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY }
-        filter.forEach { stopCmd(it) }
+        val filter = cmdList.filter { it.permission != CONFIG_PERMISSION_PRIORITY }
+        filter.forEach { requestStopCmd(it) }
     }
 
-    private fun startCmd(cmd: ShibalnuCmdBean) {
+    private fun requestStartCmd(cmd: ShibalnuCmdBean) {
         cmdList.add(cmd)
         changeCmd(cmd.apply { status = CMD_START })
         cmdCallBack.find { it.cmd == cmd.cmd }?.block?.invoke(cmd)
     }
 
 
-    private fun stopCmd(cmd:ShibalnuCmdBean) {
+    private fun requestStopCmd(cmd:ShibalnuCmdBean) {
 //        cmdList.find { it.cmd == cmd.cmd && it.status == CMD_START }?.let {
             cmdList.removeAll(changeCmd(cmd.apply { status = CMD_STOP }))
 //        }
     }
 
-    private fun noAddCmd(cmd: ShibalnuCmdBean) = changeCmd(cmd.apply { status = CMD_NO_DO })
-    private fun addError(cmd:ShibalnuCmdBean) = changeCmd(cmd.apply { status = CMD_ADD_ERROR })
+    private fun requestNoAddCmd(cmd: ShibalnuCmdBean) = changeCmd(cmd.apply { status = CMD_NO_DO })
+    private fun requestAddError(cmd:ShibalnuCmdBean) = changeCmd(cmd.apply { status = CMD_ADD_ERROR })
 
-    private fun timeOutCmd(cmd:ShibalnuCmdBean) = cmdList.removeAll(changeCmd(cmd.apply { status = CMD_TIME_OUT }))
+    private fun requestTimeOutCmd(cmd:ShibalnuCmdBean) = cmdList.removeAll(changeCmd(cmd.apply { status = CMD_TIME_OUT }))
 
-    private fun errorCmd(cmd:ShibalnuCmdBean) = cmdList.removeAll(changeCmd(cmd.apply { status = CMD_ERROR }))
+    private fun requestErrorCmd(cmd:ShibalnuCmdBean) = cmdList.removeAll(changeCmd(cmd.apply { status = CMD_ERROR }))
 
 
 
@@ -180,7 +180,7 @@ class ShibalnuAppManger {
 
     fun stopPriorityCmd(){
         cmdList.find { it.permission == ShibalnuCmdConfig.CONFIG_PERMISSION_PRIORITY }?.let {
-            stopCmd(it)
+            requestStopCmd(it)
         }
     }
 

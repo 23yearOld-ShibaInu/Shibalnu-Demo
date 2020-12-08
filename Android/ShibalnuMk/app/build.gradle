@@ -21,9 +21,6 @@ android {
                 abiFilters 'armeabi-v7a'
                 abiFilters 'x86'
             }
-//            cmake{
-//
-//            }
         }
 
         //指定打包

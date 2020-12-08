@@ -13,7 +13,7 @@ fun initSharkManger(){
     initCmdConfig()
     initCmdsConfig()
     initShibalnuConfig(SharkMangerModel())
-    SharkOtaModel().init()
+    SharkOtaModel()
 }
 
 fun addNomorlCmd(cmdType: Int, cmd: Int, action: Int? = null, status: Int = CMD_DEFAULT, timeOut: Long = 1000 * 5, block: ((ShibalnuCmdBean) -> Unit)?){
@@ -38,13 +38,11 @@ fun addPriorityCmd(cmdType: Int, cmd: Int, action: Int? = null, status: Int = CM
     })
 }
 
-fun errorCmd(cmd:Int,parentCmd:Int){
-    mShibalnuAppManger.errorCmdCallBack(getCmdBean(cmd).apply { this.parentCmd = parentCmd })
-}
+fun errorCmd(cmd:Int,parentCmd:Int) = mShibalnuAppManger.errorCmdCallBack(getCmdBean(cmd).apply { this.parentCmd = parentCmd })
 
-fun endCmd(cmd:Int,parentCmd: Int? = null){
-    mShibalnuAppManger.endCmdCallBack(getCmdBean(cmd).apply { this.parentCmd = parentCmd })
-}
+fun endCmd(cmd:Int,parentCmd: Int? = null) = mShibalnuAppManger.endCmdCallBack(getCmdBean(cmd).apply { this.parentCmd = parentCmd })
+
+
 
 
 fun addCmd(cmdBean:ShibalnuCmdBean) = mShibalnuAppManger.addCmd(cmdBean)
