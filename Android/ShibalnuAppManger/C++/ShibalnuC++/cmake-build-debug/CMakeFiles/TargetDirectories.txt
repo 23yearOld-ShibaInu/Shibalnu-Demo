@@ -1,3 +1,0 @@
-/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/trust/Desktop/Work/Demo/Shibalnu-Demo/Shibalnu-Demo/C++/ShibalnuC++/cmake-build-debug/CMakeFiles/ShibalnuC__.dir
