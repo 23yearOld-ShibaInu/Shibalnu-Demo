@@ -14,5 +14,5 @@ class MainActivity : AppCompatActivity() {
         show_tv.text = "${test().num}"
     }
 
-    external fun get():Int
+
 }
