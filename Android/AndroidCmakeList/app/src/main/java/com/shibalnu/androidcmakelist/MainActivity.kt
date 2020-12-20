@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Example of a call to a native method
-//        sample_text.text = stringFromJNI()
+        sample_text.text = stringFromJNI()
     }
 
     /**
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         // Used to load the 'native-lib' library on application startup.
         init {
-            System.loadLibrary("Test")
+//            System.loadLibrary("Test")
             System.loadLibrary("native-lib")
         }
     }

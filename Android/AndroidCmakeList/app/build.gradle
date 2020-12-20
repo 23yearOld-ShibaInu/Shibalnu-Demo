@@ -5,10 +5,10 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
-
-    packagingOptions {
-        pickFirst 'lib/armeabi-v7a/libTest.so'
-    }
+//
+//    packagingOptions {
+//        pickFirst 'lib/armeabi-v7a/libTest.so'
+//    }
 
 
     defaultConfig {
@@ -25,6 +25,9 @@ android {
                 abiFilters 'armeabi-v7a'
             }
         }
+
+
+
     }
 
 
