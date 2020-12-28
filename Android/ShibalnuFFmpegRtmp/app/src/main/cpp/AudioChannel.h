@@ -1,0 +1,14 @@
+//
+// Created by Trust on 12/27/20.
+//
+
+#ifndef SHIBALNUFFMPEGRTMP_AUDIOCHANNEL_H
+#define SHIBALNUFFMPEGRTMP_AUDIOCHANNEL_H
+
+
+class AudioChannel {
+
+};
+
+
+#endif //SHIBALNUFFMPEGRTMP_AUDIOCHANNEL_H
