@@ -2,6 +2,7 @@
 // Created by Trust on 12/27/20.
 //
 
+
 #include "VideoChannel.h"
 
 void * task_video_decode (void * pvoid){
@@ -29,6 +30,7 @@ VideoChannel::~VideoChannel() {
 //1:解码
 //2:播放
 void VideoChannel::start() {
+    isPlay = 1;
     //通知队列开始执行
     this->packets.setFlag(1);
     this->frames.setFlag(1);
@@ -44,8 +46,18 @@ void VideoChannel::stop() {
 }
 
 void VideoChannel::video_decode() {
-    AVPacket * avPacket;
+    AVPacket * avPacket = 0;
     while (isPlay){
+
+        // 生产快  消费慢
+        // 消费速度比生成速度慢（生成100，只消费10个，这样队列会爆）
+        // 内存泄漏点2，解决方案：控制队列大小
+        if (isPlay && frames.queueSize() > 100) {
+            // 休眠 等待队列中的数据被消费
+            av_usleep(10 * 1000);
+            continue;
+        }
+
         int ret = this->packets.pop(avPacket);
         if(!isPlay){
             break;
@@ -63,6 +75,8 @@ void VideoChannel::video_decode() {
             break;
         }
 
+        releaseAVPacket(&avPacket);
+
         AVFrame * avFrame = av_frame_alloc();
         ret = avcodec_receive_frame(this->avCodecContext,avFrame);
         if(ret == AVERROR(EAGAIN)){
@@ -70,16 +84,15 @@ void VideoChannel::video_decode() {
             continue;
         }else if(ret != 0){
             //释放工作
+            releaseAVFrame(&avFrame);
             break;
         }
-
-
         //取到了 原始数据
         this->frames.push(avFrame);
     }
 
     //释放
-
+    releaseAVPacket(&avPacket);
 }
 
 void VideoChannel::video_player() {
@@ -95,16 +108,57 @@ void VideoChannel::video_player() {
             this->avCodecContext->width,
             this->avCodecContext->height,
             AV_PIX_FMT_RGBA,
-            //速率
+            //速率 例子中的选项  稳定
             SWS_BILINEAR,
             NULL,
             NULL,
             NULL
             );
-    AVFrame * avFrame = 0;
+
+
+
+    uint8_t  * dst_data[4]; //rgba
+    int dst_linesize[4];//垂直刷新的 rgba
+    AVFrame * avFrame = 0;//存放原始数据 yuv
+
+    //初始化 dst_data  dst_linesize  同时指定格式
+    av_image_alloc(dst_data,dst_linesize,avCodecContext->width,
+            avCodecContext->height,AV_PIX_FMT_RGBA,1);
+
+    //一帧一帧的把原始数据格式转换成ragb 在一帧一帧渲染到屏幕上
     while (isPlay){
 
         int ret = frames.pop(avFrame);
+
+        //如果停止播放、跳出循环、出循环、需要释放
+        if(!isPlay){
+            break;
+        }
+
+        if(!ret){
+            continue;
+        }
+
+        //格式转换(yuv -> rgba)  frame->data ==yuv原始数据   dst_data rgba格式
+        //垂直刷新 只有高度没有宽度
+        sws_scale(swsContext,avFrame->data,
+                avFrame->linesize,0,avCodecContext->height,dst_data,dst_linesize);
+
+        //渲染 显示在屏幕上
+        //两种方式
+        //渲染一帧图像(宽、高、数据)
+        this->renderCallback(dst_data[0],avCodecContext->width,avCodecContext->height,dst_linesize[0]);
+        releaseAVFrame(&avFrame);//释放
+
     }
+
+    releaseAVFrame(&avFrame);//释放
+    isPlay = 0;
+    av_freep(&dst_data[0]);
+    sws_freeContext(swsContext);
+}
+
+void VideoChannel::setRenderCallback(RenderCallback renderCallback) {
+    this->renderCallback = renderCallback;
 }
 

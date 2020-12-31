@@ -73,7 +73,7 @@ class PlayerUtils :SurfaceHolder.Callback{
         mPlayerCallBack?.onPrepared()
     }
 
-    fun onError(thread_id:Int,errorCode:Int){
+    fun onError(errorCode:Int){
         val s = when (errorCode) {
             FFMPEG_CAN_NOT_OPEN_URL -> { "打不开视频源" }
             FFMPEG_CAN_NOT_FIND_STREAMS -> { "找不到媒体信息" }
@@ -83,7 +83,7 @@ class PlayerUtils :SurfaceHolder.Callback{
             FFMPEG_OPEN_DECOOER_FAIL -> { "打开解码器失败" }
             FFMPEG_NO_MEDIA -> { "没有音频" }
             FFMPEG_READ_PACKETS_FAIL -> { "读取媒体数据包失败" }
-            else -> { "" }
+            else -> { "未知异常" }
         }
         mPlayerCallBack?.onError(s)
     }

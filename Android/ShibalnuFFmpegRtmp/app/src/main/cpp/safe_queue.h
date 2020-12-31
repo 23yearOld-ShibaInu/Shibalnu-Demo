@@ -1,5 +1,5 @@
 //
-// Created by Trust on 12/27/20.
+// Created by Administrator on 2020/1/5.
 //
 
 #ifndef KEVINPLAYER_SAFE_QUEUE_H
@@ -88,17 +88,14 @@ public:
         pthread_mutex_unlock(&mutex); // 为了让其他线程可以进来，解锁
     }
 
-    // 队列释放为空
     int isEmpty() {
         return q.empty();
     }
 
-    // 队列的大小
     int queueSize() {
         return q.size();
     }
 
-    // 清空队列
     void clearQueue() {
         pthread_mutex_lock(&mutex); // 为了线程的安全性，锁上
 

@@ -17,7 +17,7 @@ JNICallBack::JNICallBack(JavaVM *javaVm, JNIEnv *env, jobject instance) {
     const char * sig = "(I)V";
     this->jmd_prepared = env->GetMethodID(clasz,"onPrepared",sig);
 
-    const char * errorSig = "(I,I)V";
+    const char * errorSig = "(I)V";
     this->jmd_error = env->GetMethodID(clasz,"onError",errorSig);
 
 }
@@ -53,7 +53,7 @@ void JNICallBack::onPrePared(int thread_mode) {
 void JNICallBack::onErrorAction(int thread_mode, int error_code) {
     if(thread_mode == THREAD_MAIN ){
         //env 可以用
-        this->env->CallVoidMethod(this->instance,this->jmd_error);
+        this->env->CallVoidMethod(this->instance,this->jmd_error,error_code);
     }else if(thread_mode == THREAD_CHILD){
         //子线程
         //附加线程

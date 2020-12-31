@@ -28,14 +28,14 @@ TrustPlayer::~TrustPlayer(){
     }
 }
 
-TrustPlayer::TrustPlayer(const char *string,JNICallBack * jniCallBack){
+TrustPlayer::TrustPlayer(const char * data_source,JNICallBack * jniCallBack){
     //直接会崩溃 悬空指针
 //    this->data_source = data_source;
 
     //有错 长度不对  c++跟C环境不一样  c:aaa c++: aaa+\n
     //this->data_source = new char [strlen(data_source)];
 
-    this->data_source = new char [strlen(string)+1];
+    this->data_source = new char [strlen(data_source)+1];
     strcpy(this->data_source,data_source);
 
     this->jniCallBack = jniCallBack;
@@ -126,16 +126,21 @@ void TrustPlayer::prepare_() {
         if(avCodecParameters->codec_type == AVMEDIA_TYPE_AUDIO){
 //            this->audioChannel = new AudioChannel(i,avCodecContext);
         }
-        //视频流
+        //视频流 目前很多字幕流都放在视频轨道中
         else if(avCodecParameters->codec_type == AVMEDIA_TYPE_VIDEO){
             this->videoChannel = new VideoChannel(i, avCodecContext);
+            this->videoChannel->setRenderCallback(renderCallback);
         }
 
-        //通知上层 ready
-        this->jniCallBack->onPrePared(THREAD_CHILD);
-
-
     }
+    if(!audioChannel && !videoChannel){
+        this->jniCallBack->onErrorAction(THREAD_CHILD,FFMPEG_NO_MEDIA);
+        return;
+    }
+
+    //通知上层 ready
+    this->jniCallBack->onPrePared(THREAD_CHILD);
+
 
 }
 
@@ -157,6 +162,21 @@ void TrustPlayer::start() {
 void TrustPlayer::start_() {
     //循环读取 视频包
     while (this->isPlayer){
+
+        // 内存泄漏点1，解决方案：控制队列大小
+        if (videoChannel && videoChannel->packets.queueSize() > 100) {
+            // 休眠 等待队列中的数据被消费
+            av_usleep(10 * 1000);
+            continue;
+        }
+//        // 内存泄漏点1，解决方案：控制队列大小
+//        if (audioChannel && audioChannel->.queueSize() > 100) {
+//            // 休眠 等待队列中的数据被消费
+//            av_usleep(10 * 1000);
+//            continue;
+//        }
+
+
         //未解码格式保存在avPacket
         AVPacket * avPacket = av_packet_alloc();
         int ret = av_read_frame(this->avFormatContext,avPacket);
@@ -181,11 +201,13 @@ void TrustPlayer::start_() {
             //失败
             break;
         }
-
-
-        //释放
-        this->isPlayer = 0;
-        this->videoChannel->stop();
-//        this->audioChannel->stop();
     }
+    //释放
+    this->isPlayer = 0;
+    this->videoChannel->stop();
+//        this->audioChannel->stop();
+}
+
+void TrustPlayer::setRenderCallback(RenderCallback renderCallback) {
+    this->renderCallback = renderCallback;
 }

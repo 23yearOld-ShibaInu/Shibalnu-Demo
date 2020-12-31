@@ -1,12 +1,15 @@
 package com.shibalnu.ffmpegrtmp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
-
+    private val PATH = Environment.getExternalStorageDirectory()
+        .toString() + File.separator + "demo.mp4"
     private var path="rtmp://58.200.131.2:1935/livetv/hunantv"
 
     private val playerUtils:PlayerUtils = PlayerUtils()
@@ -15,8 +18,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        playerUtils.mdataSource = path
         playerUtils.setSurfaceHolder(surface_view)
+        playerUtils.mdataSource = PATH
         playerUtils.mPlayerCallBack = object :PlayerUtils.PlayerCallBack{
             override fun onPrepared() {
                 showLog("准备完成")

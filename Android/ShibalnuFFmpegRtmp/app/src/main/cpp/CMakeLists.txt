@@ -32,4 +32,6 @@ target_link_libraries(
                        ${log-lib}
                        z
                        rtmp
+                       android
+                       OpenSLES
 )

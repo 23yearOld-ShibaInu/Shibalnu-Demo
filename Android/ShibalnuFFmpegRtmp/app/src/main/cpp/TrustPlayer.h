@@ -26,7 +26,7 @@ public:
 
     void start();
     void start_();
-
+    void setRenderCallback(RenderCallback renderCallback);
 private:
     char * data_source = 0;
     pthread_t pid_prepare = 0;
@@ -35,8 +35,8 @@ private:
     JNICallBack * jniCallBack = 0;
     VideoChannel * videoChannel = 0;
     AudioChannel * audioChannel = 0;
-
-    int isPlayer = 0;
+    RenderCallback renderCallback = 0;
+    bool isPlayer = 0;
 };
 
 
