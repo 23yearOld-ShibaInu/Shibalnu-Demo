@@ -7,11 +7,15 @@
 
 #include "safe_queue.h"
 #include "pthread.h"
+#include <SLES/OpenSLES.h>
+#include <SLES/OpenSLES_Android.h>
 
 extern "C"{
 #include "ffmpeg/include/libavcodec/avcodec.h"
+#include <libavutil/time.h>
+#include <libswresample/swresample.h>
 };
-
+typedef void (*RenderCallback) (uint8_t *, int, int, int);
 class BaseChannel {
 public:
     int stram_index;
@@ -50,8 +54,11 @@ public:
     SafeQueue<AVFrame *> frames;
     bool isPlay = 1;
 
-    pthread_t  pid_video_decode = 0;
-    pthread_t  pid_video_play = 0;
+    pthread_t  pid_decode = 0;
+    pthread_t  pid_play = 0;
+    void setRenderCallback(RenderCallback renderCallback);
+
+    RenderCallback renderCallback;
 };
 
 

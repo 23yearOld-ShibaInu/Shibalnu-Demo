@@ -17,13 +17,9 @@ void * task_video_play (void * pvoid){
     return  0;
 }
 
-VideoChannel::VideoChannel(int stream_index,AVCodecContext *pContext) : BaseChannel(stream_index, pContext) {
+VideoChannel::VideoChannel(int stream_index,AVCodecContext *pContext) : BaseChannel(stream_index, pContext) {}
 
-}
-
-VideoChannel::~VideoChannel() {
-
-}
+VideoChannel::~VideoChannel() {}
 
 
 //从队列取出 未解码的数据
@@ -36,9 +32,9 @@ void VideoChannel::start() {
     this->frames.setFlag(1);
 
     //解码线程
-    pthread_create(&pid_video_decode,0,task_video_decode,this);
+    pthread_create(&pid_decode,0,task_video_decode,this);
     //播放线程
-    pthread_create(&pid_video_play,0,task_video_play,this);
+    pthread_create(&pid_play,0,task_video_play,this);
 }
 
 void VideoChannel::stop() {
@@ -158,7 +154,7 @@ void VideoChannel::video_player() {
     sws_freeContext(swsContext);
 }
 
-void VideoChannel::setRenderCallback(RenderCallback renderCallback) {
+void BaseChannel::setRenderCallback(RenderCallback renderCallback) {
     this->renderCallback = renderCallback;
 }
 

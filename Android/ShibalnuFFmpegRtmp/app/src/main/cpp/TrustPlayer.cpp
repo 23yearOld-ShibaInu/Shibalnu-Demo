@@ -63,8 +63,10 @@ void TrustPlayer::prepare_() {
 
     int status = avformat_open_input(&this->avFormatContext,this->data_source,0,&dictionary);
     if(status){
-        //JNI回调 通知上层通知用户 播放流已经损坏
-        this->jniCallBack->onErrorAction(THREAD_CHILD,FFMPEG_CAN_NOT_OPEN_URL);
+        if(this->jniCallBack){
+            //JNI回调 通知上层通知用户 播放流已经损坏
+            this->jniCallBack->onErrorAction(THREAD_CHILD,FFMPEG_CAN_NOT_OPEN_URL);
+        }
         return;
     }
 
@@ -72,8 +74,11 @@ void TrustPlayer::prepare_() {
     //不给字典 是因为不需要设置额外配置
     status = avformat_find_stream_info(this->avFormatContext,0);
     if(status < 0){
-        //JNI回调 通知上层通知用户 失败
-        this->jniCallBack->onErrorAction(THREAD_CHILD,FFMPEG_CAN_NOT_FIND_STREAMS);
+        if(this->jniCallBack){
+            //JNI回调 通知上层通知用户 失败
+
+            this->jniCallBack->onErrorAction(THREAD_CHILD,FFMPEG_CAN_NOT_FIND_STREAMS);
+        }
         return;
     }
 
@@ -124,14 +129,13 @@ void TrustPlayer::prepare_() {
         //区分媒体流格式 音频、视频
         //音频流
         if(avCodecParameters->codec_type == AVMEDIA_TYPE_AUDIO){
-//            this->audioChannel = new AudioChannel(i,avCodecContext);
+            this->audioChannel = new AudioChannel(i,avCodecContext);
         }
         //视频流 目前很多字幕流都放在视频轨道中
         else if(avCodecParameters->codec_type == AVMEDIA_TYPE_VIDEO){
             this->videoChannel = new VideoChannel(i, avCodecContext);
             this->videoChannel->setRenderCallback(renderCallback);
         }
-
     }
     if(!audioChannel && !videoChannel){
         this->jniCallBack->onErrorAction(THREAD_CHILD,FFMPEG_NO_MEDIA);
@@ -139,21 +143,21 @@ void TrustPlayer::prepare_() {
     }
 
     //通知上层 ready
-    this->jniCallBack->onPrePared(THREAD_CHILD);
+    if(jniCallBack){
+        this->jniCallBack->onPrePared(THREAD_CHILD);
+    }
 
 
 }
 
 void TrustPlayer::start() {
     isPlayer = 1;
-
     if(this->videoChannel){
         this->videoChannel->start();
     }
-
-//    if(this->audioChannel){
-//        this->audioChannel->start();
-//    }
+    if(this->audioChannel){
+        this->audioChannel->start();
+    }
     //开始线程 放入队列
     pthread_create(&this->pid_start,0,customTashStartThread,this);
 }
@@ -169,12 +173,12 @@ void TrustPlayer::start_() {
             av_usleep(10 * 1000);
             continue;
         }
-//        // 内存泄漏点1，解决方案：控制队列大小
-//        if (audioChannel && audioChannel->.queueSize() > 100) {
-//            // 休眠 等待队列中的数据被消费
-//            av_usleep(10 * 1000);
-//            continue;
-//        }
+        // 内存泄漏点1，解决方案：控制队列大小
+        if (audioChannel && audioChannel->packets.queueSize() > 100) {
+            // 休眠 等待队列中的数据被消费
+            av_usleep(10 * 1000);
+            continue;
+        }
 
 
         //未解码格式保存在avPacket
@@ -192,9 +196,9 @@ void TrustPlayer::start_() {
             if(videoChannel && videoChannel->stram_index == avPacket->stream_index){
                 this->videoChannel->packets.push(avPacket);
             }
-//            else if(audioChannel && audioChannel->stram_index == avPacket->stream_index){
-//
-//            }
+            else if(audioChannel && audioChannel->stram_index == avPacket->stream_index){
+                this->audioChannel->packets.push(avPacket);
+            }
         }else if(ret == AVERROR_EOF){//文件末尾 读完了
 
         }else{
@@ -205,7 +209,7 @@ void TrustPlayer::start_() {
     //释放
     this->isPlayer = 0;
     this->videoChannel->stop();
-//        this->audioChannel->stop();
+    this->audioChannel->stop();
 }
 
 void TrustPlayer::setRenderCallback(RenderCallback renderCallback) {

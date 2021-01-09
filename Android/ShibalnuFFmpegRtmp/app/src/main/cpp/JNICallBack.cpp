@@ -38,7 +38,7 @@ void JNICallBack::onPrePared(int thread_mode) {
         //子线程
         //附加线程
         JNIEnv * jniEnv = nullptr;
-        int ret = this->javaVm->AttachCurrentThread(&jniEnv,0);
+        jint ret = this->javaVm->AttachCurrentThread(&jniEnv,0);
         if(ret != JNI_OK){
             return;
         }
@@ -62,7 +62,7 @@ void JNICallBack::onErrorAction(int thread_mode, int error_code) {
         if(ret != JNI_OK){
             return;
         }
-        jniEnv->CallVoidMethod(this->instance,this->jmd_error);
+        jniEnv->CallVoidMethod(this->instance,this->jmd_error,error_code);
 
         //结束附加线程
         this->javaVm->DetachCurrentThread();

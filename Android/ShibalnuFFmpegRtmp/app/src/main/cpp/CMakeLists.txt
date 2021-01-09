@@ -30,8 +30,8 @@ target_link_libraries(
                        avformat avcodec avfilter avutil swresample swscale
                        -Wl,--end-group
                        ${log-lib}
-                       z
+                       z        #NDK 内置 可以支持ffmpeg
                        rtmp
-                       android
-                       OpenSLES
+                       android  #NDK 内置 可以渲染屏幕
+                       OpenSLES #NDK 内置 可以驱动声卡
 )

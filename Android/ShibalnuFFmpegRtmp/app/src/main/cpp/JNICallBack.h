@@ -16,8 +16,6 @@ public:
     //回调
     //thread_mode 可以区分 主线程或子线程
     void onPrePared(int thread_mode);
-
-
     //失败回调
     void onErrorAction(int thread_mode,int error_code);
 
@@ -26,7 +24,7 @@ private:
     JNIEnv * env = 0;
     jobject  instance;
 
-    const char  * class_path ;
+    const char  * class_path = 0;
     jmethodID jmd_prepared;
     jmethodID jmd_error;
 };

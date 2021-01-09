@@ -12,10 +12,9 @@ extern "C"{
     #include <libswscale/swscale.h>
     #include <libavutil/imgutils.h>
     #include <libavutil/time.h>
-
 }
 
-typedef void (*RenderCallback) (uint8_t *, int, int, int);
+
 
 class VideoChannel : public BaseChannel {
 
@@ -33,11 +32,6 @@ public:
     void video_decode();
 
     void video_player();
-
-    void setRenderCallback(RenderCallback renderCallback);
-
-private:
-    RenderCallback renderCallback;
 };
 
 

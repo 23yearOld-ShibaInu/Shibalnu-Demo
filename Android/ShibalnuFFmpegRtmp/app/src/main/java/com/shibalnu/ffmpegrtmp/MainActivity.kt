@@ -17,6 +17,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+//        val msg = "speech&laucher|跳转&蓝牙页面;关闭&ble;退出&蓝牙页面;跳转&地图页面".trim()
+
+
 
         playerUtils.setSurfaceHolder(surface_view)
         playerUtils.mdataSource = PATH
@@ -29,6 +32,9 @@ class MainActivity : AppCompatActivity() {
             override fun onError(error: String) { showLog(error) }
 
         }
+
+
+
     }
 
     override fun onResume() {
