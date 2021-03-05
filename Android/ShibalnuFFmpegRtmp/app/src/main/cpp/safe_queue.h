@@ -7,21 +7,21 @@
 
 #include <queue>
 #include <pthread.h>
-
+using namespace std;
 template <typename T>
 
 class SafeQueue
 {
     // Java的回调   ===  C语言的函数指针
     typedef void (*ReleaseCallback) (T *);
-
+    typedef void (*SyncCallBack) (queue<T> &);
 private:
     std::queue<T> q;
     pthread_mutex_t mutex;
     pthread_cond_t cond;
     int flag; // 标记队列释放工作[true=工作状态，false=非工作状态]
     ReleaseCallback releaseCallback;
-
+    SyncCallBack syncCallBack;
 public:
     SafeQueue()
     {
@@ -114,6 +114,18 @@ public:
 
     void setReleaseCallback(ReleaseCallback releaseCallback) {
         this->releaseCallback = releaseCallback;
+    }
+
+    void setSyncCallback(SyncCallBack syncCallBack1) {
+        this->syncCallBack = syncCallBack1;
+    }
+
+    //同步 丢帧 操作
+    void syncAction(){
+        pthread_mutex_lock(&mutex);
+        //不做任何逻辑 丢给外部自己完成
+        syncCallBack(q);
+        pthread_mutex_unlock(&mutex);
     }
 };
 

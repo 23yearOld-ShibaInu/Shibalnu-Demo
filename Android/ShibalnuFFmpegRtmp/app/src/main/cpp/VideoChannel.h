@@ -6,6 +6,7 @@
 #define SHIBALNUFFMPEGRTMP_VIDEOCHANNEL_H
 
 #include "BaseChannel.h"
+#include "AudioChannel.h"
 
 extern "C"{
     #include <libavcodec/avcodec.h>
@@ -19,8 +20,7 @@ extern "C"{
 class VideoChannel : public BaseChannel {
 
 public:
-    VideoChannel(int stream_index,
-                 AVCodecContext *pContext);
+    VideoChannel(int stream_index, AVCodecContext *pContext, AVRational rational, int i);
 
 
     virtual ~VideoChannel();
@@ -32,6 +32,12 @@ public:
     void video_decode();
 
     void video_player();
+
+    void setAudioChannel(AudioChannel * audioChannel);
+
+private:
+    int fps;
+    AudioChannel * audioChannel;
 };
 
 

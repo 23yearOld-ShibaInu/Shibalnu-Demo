@@ -9,7 +9,7 @@
 
 class AudioChannel: public BaseChannel {
 public:
-    AudioChannel(int stream_index,AVCodecContext * avCodecContext);
+    AudioChannel(int stream_index, AVCodecContext *avCodecContext, AVRational rational);
     virtual ~AudioChannel();
     void start();
     void stop();
@@ -37,7 +37,7 @@ private:
     //获取播放器队列接口
     SLAndroidSimpleBufferQueueItf  bqPlayerBufferQueue;
 
-    //重采样
+    //重采样 == 音频转换
     SwrContext * swr_ctx;
 };
 

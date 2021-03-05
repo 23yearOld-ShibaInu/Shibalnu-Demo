@@ -1,5 +1,6 @@
 package com.shibalnu.ffmpegrtmp
 
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -9,9 +10,11 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
     private val PATH = Environment.getExternalStorageDirectory()
-        .toString() + File.separator + "demo.mp4"
-    private var path="rtmp://58.200.131.2:1935/livetv/hunantv"
+        .toString() + File.separator + "test.mp4"
+//    private var path="rtmp://58.200.131.2:1935/livetv/hunantv"
 
+    private var path1 = Environment.getExternalStorageDirectory()
+        .toString() + File.separator + "speak.mp4"
     private val playerUtils:PlayerUtils = PlayerUtils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +25,8 @@ class MainActivity : AppCompatActivity() {
 
 
         playerUtils.setSurfaceHolder(surface_view)
-        playerUtils.mdataSource = PATH
+        val path = PATH
+        playerUtils.mdataSource = path!!
         playerUtils.mPlayerCallBack = object :PlayerUtils.PlayerCallBack{
             override fun onPrepared() {
                 showLog("准备完成")

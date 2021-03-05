@@ -18,17 +18,21 @@ void * task_audio_player(void * pVoid){
 }
 
 
-AudioChannel::AudioChannel(int stream_index, AVCodecContext *avCodecContext) : BaseChannel(
-        stream_index, avCodecContext) {
+AudioChannel::AudioChannel(int stream_index, AVCodecContext *avCodecContext, AVRational time_base)
+        : BaseChannel(
+        stream_index, avCodecContext,time_base) {
 
+    //播放参数 必须固定 声卡要求 （输出 音频重要参数必须固定
+    //输出必须固定
     //初始化缓冲区 out_buffers
     out_channels = av_get_channel_layout_nb_channels(AV_CH_LAYOUT_STEREO);
     out_sample_size = av_get_bytes_per_sample(AV_SAMPLE_FMT_S16);
     out_sample_rate = 44100;
     out_buffers_size = out_sample_rate * out_sample_size * out_channels;
 
-    out_buffers = static_cast<uint8_t *>(malloc(out_buffers_size));
-    memset(out_buffers,0,out_buffers_size);
+    //缓冲区拿到三者 通道数*采样率*s16
+    out_buffers = static_cast<uint8_t *>(malloc(out_buffers_size));//堆中声明
+    memset(out_buffers,0,out_buffers_size);//归零
 
     swr_ctx = swr_alloc_set_opts(0,AV_CH_LAYOUT_STEREO,AV_SAMPLE_FMT_S16,out_sample_rate,
             avCodecContext->channel_layout,avCodecContext->sample_fmt,avCodecContext->sample_rate,0,0);
@@ -126,6 +130,7 @@ int AudioChannel::getPcm() {
 
         //PCM 的处理逻辑
         frame->data;
+
         //音频播放器的数据格式是在下面定义的(16位 双声道)
         //原始数据是 待播放的音频PCM数据
         //无法统一，一个是自定义16 双声道 一个是原始数据 需要重采样
@@ -135,9 +140,16 @@ int AudioChannel::getPcm() {
         ret = swr_convert(swr_ctx, &out_buffers, dst_nb_samples, (const uint8_t **) frame->data, frame->nb_samples);
         if(ret < 0){
             //为什么无法重采样 没有返回 不影响分析整个声波
-        }
+            //重采样失败
 
+        }
+        //每个声道的数据
         pcm_data_size = ret * out_sample_size * out_channels;
+
+        //获取音频包 帧 时间戳 (时间都是有单位的，在FFmpeg是成为时间基 TimeBase)
+        audioTime = frame->best_effort_timestamp * av_q2d(this->time_base);
+
+
         break;
 
     }

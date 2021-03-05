@@ -125,15 +125,23 @@ void TrustPlayer::prepare_() {
             return;
         }
 
+        //获取时间基 完成音视频同步
+        AVRational time_base = stream->time_base;
+
         //解码器打开成功
         //区分媒体流格式 音频、视频
         //音频流
         if(avCodecParameters->codec_type == AVMEDIA_TYPE_AUDIO){
-            this->audioChannel = new AudioChannel(i,avCodecContext);
+            this->audioChannel = new AudioChannel(i, avCodecContext, time_base);
         }
         //视频流 目前很多字幕流都放在视频轨道中
         else if(avCodecParameters->codec_type == AVMEDIA_TYPE_VIDEO){
-            this->videoChannel = new VideoChannel(i, avCodecContext);
+            //获取视频的 FPS
+            //平均帧率 == 时间基
+            AVRational frame_rate = stream->avg_frame_rate;
+            int fpsValue = av_q2d(frame_rate);
+
+            this->videoChannel = new VideoChannel(i, avCodecContext, time_base, fpsValue);
             this->videoChannel->setRenderCallback(renderCallback);
         }
     }
@@ -153,6 +161,7 @@ void TrustPlayer::prepare_() {
 void TrustPlayer::start() {
     isPlayer = 1;
     if(this->videoChannel){
+        this->videoChannel->setAudioChannel(this->audioChannel);
         this->videoChannel->start();
     }
     if(this->audioChannel){
@@ -163,10 +172,11 @@ void TrustPlayer::start() {
 }
 
 //异步函数
-void TrustPlayer::start_() {
+void TrustPlayer:: start_() {
     //循环读取 视频包
     while (this->isPlayer){
 
+        //生产的 太多了  处理不过来 容易泄漏  目的 队列不被爆掉
         // 内存泄漏点1，解决方案：控制队列大小
         if (videoChannel && videoChannel->packets.queueSize() > 100) {
             // 休眠 等待队列中的数据被消费

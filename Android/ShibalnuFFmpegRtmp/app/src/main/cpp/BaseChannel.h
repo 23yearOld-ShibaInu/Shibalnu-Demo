@@ -20,9 +20,10 @@ class BaseChannel {
 public:
     int stram_index;
     AVCodecContext * avCodecContext;
-    BaseChannel(int stram_index, AVCodecContext *pContext){
+    BaseChannel(int stram_index, AVCodecContext *pContext,AVRational time_base){
         this->stram_index = stram_index;
         this->avCodecContext = pContext;
+        this->time_base = time_base;
         packets.setReleaseCallback(releaseAVPacket);
         frames.setReleaseCallback(releaseAVFrame);
     }
@@ -59,6 +60,12 @@ public:
     void setRenderCallback(RenderCallback renderCallback);
 
     RenderCallback renderCallback;
+
+    //时间基 FFmpeg内部的时间
+    //例如： 以视频为例：24fps == 一秒钟24帧 时间基就表示 每一帧 == 时间基(1/24)
+    AVRational time_base;
+    double audioTime;//每一帧，音频计算后的时间值
+    double videoTime;//每一帧，视频计算后的时间值
 };
 
 

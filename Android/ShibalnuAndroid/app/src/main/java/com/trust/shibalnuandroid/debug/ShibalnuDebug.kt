@@ -1,6 +1,7 @@
 package com.trust.shibalnuandroid.debug
 
-import com.trust.shibalnuandroid.logd
+
+import com.trust.shibalnuandroid.mainlogd
 import com.trust.shibalnuandroid.waitTime
 import kotlinx.coroutines.*
 import kotlin.coroutines.resume
@@ -25,7 +26,7 @@ class ShibalnuDebug {
         user.namg = "帅哥"
         user.namg = "李帅哥"
 
-        user.namg.logd("获取name:")
+        user.namg.mainlogd("获取name:")
     }
 
 
@@ -34,7 +35,7 @@ class ShibalnuDebug {
     class User{
         var namg:String by Delegates.observable("陕西吴彦祖"){
             prop,old,new->
-            "prop:$prop | old:$old | new:$new".logd()
+            "prop:$prop | old:$old | new:$new".mainlogd()
         }
     }
 
@@ -42,7 +43,7 @@ class ShibalnuDebug {
          val job = Job()
          CoroutineScope(job).launch {
                 waitTime(1000){
-                    "计时结束".logd()
+                    "计时结束".mainlogd()
                 }
          }
 

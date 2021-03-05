@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
 
         val currentTimeMillis = System.currentTimeMillis()
         waitTime(3000){
-            "waitTime success".logd()
-            (System.currentTimeMillis() - currentTimeMillis).logd("耗时：")
+            "waitTime success".mainlogd()
+            (System.currentTimeMillis() - currentTimeMillis).mainlogd("耗时：")
         }
 
         Log.d("lhh","coroutineScope code end")
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-fun Any.logd(msg:String = "") = Log.d("Mr_Li","$msg | $this")
+fun Any.mainlogd(msg:String = "") = Log.d("Mr_Li","$msg | $this")
 
 fun waitTime(times:Long,block:()->Unit){
     val coroutineScope = CoroutineScope(Job())

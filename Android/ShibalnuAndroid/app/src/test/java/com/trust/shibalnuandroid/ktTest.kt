@@ -60,22 +60,22 @@ class ktTest{
 
     @Test
     fun ktTest1(){
-        "ktTest1 start".logd()
+        "ktTest1 start".BsLogd()
         val str = ""
         printString(str){s->
-            "lambda start".logd()
+            "lambda start".BsLogd()
             if(s.isEmpty()) return
-            s.logd()
-            "lambda end".logd()
+            s.BsLogd()
+            "lambda end".BsLogd()
         }
-        "ktTest1 end".logd()
+        "ktTest1 end".BsLogd()
 
     }
 
      inline fun printString(str:String,block:(String)-> Unit){
-        "printString begin".logd()
+        "printString begin".BsLogd()
         block(str)
-        "printString end".logd()
+        "printString end".BsLogd()
      }
 
 
@@ -97,7 +97,7 @@ class ktTest{
     @Test
     fun ktTest04(){
         val instance = ClassBikeListener.getInstance(BikeHelp())
-        instance.reusltTest05Listener { it.logd("lambda reusltTest05Listener") }
+        instance.reusltTest05Listener { it.BsLogd("lambda reusltTest05Listener") }
 
         test("addasd").toString()
 
@@ -140,15 +140,15 @@ class ktTest{
 
 
     class BikeHelp():BikeListener{
-        override fun test01() { "BikeHelp1" .logd() }
+        override fun test01() { "BikeHelp1" .BsLogd() }
 
-        override fun test02() { "BikeHelp2" .logd() }
+        override fun test02() { "BikeHelp2" .BsLogd() }
 
-        override fun test03() { "BikeHelp3" .logd() }
+        override fun test03() { "BikeHelp3" .BsLogd() }
 
-        override fun test04() { "BikeHelp4" .logd() }
+        override fun test04() { "BikeHelp4" .BsLogd() }
 
-        override fun test05() { "BikeHelp5" .logd() }
+        override fun test05() { "BikeHelp5" .BsLogd() }
     }
 
     class ClassBikeListener (val i: BikeHelp) : BikeListener by i {

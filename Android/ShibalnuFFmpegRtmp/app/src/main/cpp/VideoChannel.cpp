@@ -5,6 +5,30 @@
 
 #include "VideoChannel.h"
 
+
+//丢包(丢帧)的函数指针 具体实现 frame
+void dropAVFrame(queue<AVFrame *> &qq){
+    if(!qq.empty()){
+        //丢包
+        AVFrame * frame = qq.front();
+        BaseChannel::releaseAVFrame(&frame);//释放
+        qq.pop();
+    }
+}
+
+
+//丢包(丢帧)的函数指针 具体实现 packet
+void dropAVPacket(queue<AVPacket *> &qq){
+    if (!qq.empty()){
+        AVPacket * packet = qq.front();
+        //BaseChannel::releaseAVPacket(&packet);//有可能把关键帧丢了
+        if(packet->flags != AV_PKT_FLAG_KEY){//不等于关键帧 丢掉
+            BaseChannel::releaseAVPacket(&packet);
+        }
+        qq.pop();
+    }
+}
+
 void * task_video_decode (void * pvoid){
     VideoChannel * videoChannel = static_cast<VideoChannel *>(pvoid);
     videoChannel->video_decode();
@@ -17,7 +41,13 @@ void * task_video_play (void * pvoid){
     return  0;
 }
 
-VideoChannel::VideoChannel(int stream_index,AVCodecContext *pContext) : BaseChannel(stream_index, pContext) {}
+VideoChannel::VideoChannel(int stream_index, AVCodecContext *pContext, AVRational time_base, int fps)
+        : BaseChannel(stream_index, pContext, time_base) {
+    this->fps = fps;
+
+    this->frames.setSyncCallback(dropAVFrame);
+    this->packets.setSyncCallback(dropAVPacket);
+}
 
 VideoChannel::~VideoChannel() {}
 
@@ -47,7 +77,7 @@ void VideoChannel::video_decode() {
 
         // 生产快  消费慢
         // 消费速度比生成速度慢（生成100，只消费10个，这样队列会爆）
-        // 内存泄漏点2，解决方案：控制队列大小
+        // 内存泄漏点2，解决方案：控制队列大小q
         if (isPlay && frames.queueSize() > 100) {
             // 休眠 等待队列中的数据被消费
             av_usleep(10 * 1000);
@@ -76,7 +106,8 @@ void VideoChannel::video_decode() {
         AVFrame * avFrame = av_frame_alloc();
         ret = avcodec_receive_frame(this->avCodecContext,avFrame);
         if(ret == AVERROR(EAGAIN)){
-            //代表 I帧完整 帧取的不完整  P B 会进入这里 直到去到完整的为止
+            //代表 I帧完整 帧取的不完整  P B 会进入这里 直到  取到完整的为止
+            releaseAVFrame(&avFrame);
             continue;
         }else if(ret != 0){
             //释放工作
@@ -140,6 +171,64 @@ void VideoChannel::video_player() {
         sws_scale(swsContext,avFrame->data,
                 avFrame->linesize,0,avCodecContext->height,dst_data,dst_linesize);
 
+        //控制视频播放速率
+        //在视频渲染前，根据 FPS 来控制视频帧
+
+        //获取当前帧的额外延时时间
+        double extra_delay = avFrame->repeat_pict;
+        //根据FPS 得到延时时间
+         double base_delay = 1.0 / this->fps;
+         //得到最终时间 当前帧 实际延时时间
+         double result_delay = extra_delay + base_delay;
+
+         //等音频
+         //单位微秒
+         //使视频控制视频速度
+        //还没同步
+        //av_usleep(result_delay * 1000 * 1000);
+
+        //拿到视频
+        this->videoTime = avFrame->best_effort_timestamp * av_q2d(this->time_base) ;
+
+        //拿到音频 播放时间基 audioChannel.audioTime
+        double autoTime = this->audioChannel->audioTime;
+
+        //计算差值
+        double time_diff = videoTime - audioTime;
+
+        if(time_diff >0){
+            //视频快一些 音频慢一些
+            //等待音频
+
+            //细节处理
+            if(time_diff > 1){
+                //*2是比较合适的 经过测试
+                //有一点差距
+                av_usleep((result_delay * 2) * 1000 * 1000 );
+            }else{
+                //0~1相差不大
+                av_usleep((time_diff + result_delay)  * 1000 * 1000) ;
+            }
+
+
+        }else if(time_diff <0){
+            //视频慢 音频快
+            //视频加快 追音频
+            //丢帧 丢冗余的帧 （冗余帧还需要解码所以丢弃掉会快）
+            //packtes  frames
+            //同步丢包操作
+            //releaseAVFrame(&avFrame); 不能这么操作
+
+            this->frames.syncAction();
+
+            //继续 循环
+            continue;
+
+        }else {
+            // 同步
+        }
+
+
         //渲染 显示在屏幕上
         //两种方式
         //渲染一帧图像(宽、高、数据)
@@ -152,6 +241,10 @@ void VideoChannel::video_player() {
     isPlay = 0;
     av_freep(&dst_data[0]);
     sws_freeContext(swsContext);
+}
+
+void VideoChannel::setAudioChannel(AudioChannel * audioChannel) {
+    this->audioChannel = audioChannel;
 }
 
 void BaseChannel::setRenderCallback(RenderCallback renderCallback) {
