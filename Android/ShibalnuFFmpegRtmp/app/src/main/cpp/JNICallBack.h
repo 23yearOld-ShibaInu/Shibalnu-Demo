@@ -19,6 +19,7 @@ public:
     //失败回调
     void onErrorAction(int thread_mode,int error_code);
 
+    void onResultProgress(int thread_mode,int nativeProgress);
 private:
     JavaVM * javaVm = 0;
     JNIEnv * env = 0;
@@ -27,6 +28,7 @@ private:
     const char  * class_path = 0;
     jmethodID jmd_prepared;
     jmethodID jmd_error;
+    jmethodID jmd_onprogress;
 };
 
 

@@ -9,7 +9,7 @@
 
 class AudioChannel: public BaseChannel {
 public:
-    AudioChannel(int stream_index, AVCodecContext *avCodecContext, AVRational rational);
+    AudioChannel(int stream_index, AVCodecContext *avCodecContext, AVRational rational,JNICallBack * jniCallBack);
     virtual ~AudioChannel();
     void start();
     void stop();

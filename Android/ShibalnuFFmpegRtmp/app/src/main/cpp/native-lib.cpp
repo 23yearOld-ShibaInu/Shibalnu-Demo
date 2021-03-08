@@ -126,3 +126,13 @@ Java_com_shibalnu_ffmpegrtmp_PlayerUtils_setSurfaceNative(JNIEnv *env, jobject t
     pthread_mutex_unlock(&p_mutex);
 }
 
+
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_shibalnu_ffmpegrtmp_PlayerUtils_getDuration(JNIEnv *env, jobject thiz) {
+    if(trustPlayer){
+        return trustPlayer->getDuration();
+    }
+    return 0;
+}

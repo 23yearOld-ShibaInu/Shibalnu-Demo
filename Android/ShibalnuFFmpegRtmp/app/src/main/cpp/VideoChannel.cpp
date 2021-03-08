@@ -24,8 +24,9 @@ void dropAVPacket(queue<AVPacket *> &qq){
         //BaseChannel::releaseAVPacket(&packet);//有可能把关键帧丢了
         if(packet->flags != AV_PKT_FLAG_KEY){//不等于关键帧 丢掉
             BaseChannel::releaseAVPacket(&packet);
+            qq.pop();
         }
-        qq.pop();
+
     }
 }
 
@@ -41,8 +42,8 @@ void * task_video_play (void * pvoid){
     return  0;
 }
 
-VideoChannel::VideoChannel(int stream_index, AVCodecContext *pContext, AVRational time_base, int fps)
-        : BaseChannel(stream_index, pContext, time_base) {
+VideoChannel::VideoChannel(int stream_index, AVCodecContext *pContext, AVRational time_base, int fps,JNICallBack * jniCallBack)
+        : BaseChannel(stream_index, pContext, time_base,jniCallBack) {
     this->fps = fps;
 
     this->frames.setSyncCallback(dropAVFrame);
@@ -152,6 +153,7 @@ void VideoChannel::video_player() {
     av_image_alloc(dst_data,dst_linesize,avCodecContext->width,
             avCodecContext->height,AV_PIX_FMT_RGBA,1);
 
+    double delay_time_per_frame = 1.0 / fps;
     //一帧一帧的把原始数据格式转换成ragb 在一帧一帧渲染到屏幕上
     while (isPlay){
 
@@ -175,11 +177,10 @@ void VideoChannel::video_player() {
         //在视频渲染前，根据 FPS 来控制视频帧
 
         //获取当前帧的额外延时时间
-        double extra_delay = avFrame->repeat_pict;
+        double extra_delay = avFrame->repeat_pict / (2 * fps);
         //根据FPS 得到延时时间
-         double base_delay = 1.0 / this->fps;
-         //得到最终时间 当前帧 实际延时时间
-         double result_delay = extra_delay + base_delay;
+        double real_delay = delay_time_per_frame + extra_delay;
+
 
          //等音频
          //单位微秒
@@ -194,20 +195,19 @@ void VideoChannel::video_player() {
         double autoTime = this->audioChannel->audioTime;
 
         //计算差值
-        double time_diff = videoTime - audioTime;
-
+        double time_diff = videoTime - autoTime;
         if(time_diff >0){
             //视频快一些 音频慢一些
             //等待音频
-
+            LOGD("视频快，音频慢");
             //细节处理
             if(time_diff > 1){
                 //*2是比较合适的 经过测试
                 //有一点差距
-                av_usleep((result_delay * 2) * 1000 * 1000 );
+                av_usleep((real_delay * 2) * 1000000 );
             }else{
                 //0~1相差不大
-                av_usleep((time_diff + result_delay)  * 1000 * 1000) ;
+                av_usleep((time_diff + real_delay)  * 1000000) ;
             }
 
 
@@ -218,14 +218,16 @@ void VideoChannel::video_player() {
             //packtes  frames
             //同步丢包操作
             //releaseAVFrame(&avFrame); 不能这么操作
-
-            this->frames.syncAction();
-
-            //继续 循环
-            continue;
+            if(fabs(time_diff) >= 0.05){
+                this->frames.syncAction();
+                LOGD("视频慢 音频块 需要丢帧");
+                //继续 循环
+                continue;
+            }
 
         }else {
             // 同步
+            LOGD("音视频同步");
         }
 
 

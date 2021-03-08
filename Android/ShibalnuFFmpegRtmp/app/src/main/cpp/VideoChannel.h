@@ -20,7 +20,7 @@ extern "C"{
 class VideoChannel : public BaseChannel {
 
 public:
-    VideoChannel(int stream_index, AVCodecContext *pContext, AVRational rational, int i);
+    VideoChannel(int stream_index, AVCodecContext *pContext, AVRational rational, int i,JNICallBack * jniCallBack);
 
 
     virtual ~VideoChannel();

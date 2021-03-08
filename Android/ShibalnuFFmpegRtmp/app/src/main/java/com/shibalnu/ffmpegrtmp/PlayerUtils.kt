@@ -1,5 +1,6 @@
 package com.shibalnu.ffmpegrtmp
 
+import android.util.Log
 import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -53,6 +54,7 @@ class PlayerUtils :SurfaceHolder.Callback{
     }
 
 
+
     /**
      * native区域
      */
@@ -64,7 +66,7 @@ class PlayerUtils :SurfaceHolder.Callback{
     external fun getFFmpegVersion():String
     //底层操作surface对象
     external fun setSurfaceNative(surface: Surface)
-
+    external fun getDuration():Int
 
     /**
      * native 调用上层
@@ -88,8 +90,15 @@ class PlayerUtils :SurfaceHolder.Callback{
         mPlayerCallBack?.onError(s)
     }
 
+
+    fun onProgress(progress:Int){
+        Log.d("lhh","当前进度:$progress")
+        mPlayerCallBack?.onProgress(progress)
+    }
+
     interface PlayerCallBack{
         fun onPrepared()
         fun onError(error:String)
+        fun onProgress(progress:Int)
     }
 }

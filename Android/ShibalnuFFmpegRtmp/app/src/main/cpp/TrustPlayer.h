@@ -9,6 +9,9 @@
 #include "VideoChannel.h"
 #include "AudioChannel.h"
 #include "JNICallBack.h"
+
+#include "Mr_Li_Log.h"
+
 extern "C"{
     #include <libavformat/avformat.h>
 };
@@ -27,6 +30,7 @@ public:
     void start();
     void start_();
     void setRenderCallback(RenderCallback renderCallback);
+    int getDuration();
 private:
     char * data_source = 0;
     pthread_t pid_prepare = 0;
@@ -37,6 +41,7 @@ private:
     AudioChannel * audioChannel = 0;
     RenderCallback renderCallback = 0;
     bool isPlayer = 0;
+    int duration = 0;
 };
 
 

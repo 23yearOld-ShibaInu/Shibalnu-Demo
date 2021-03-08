@@ -18,9 +18,9 @@ void * task_audio_player(void * pVoid){
 }
 
 
-AudioChannel::AudioChannel(int stream_index, AVCodecContext *avCodecContext, AVRational time_base)
+AudioChannel::AudioChannel(int stream_index, AVCodecContext *avCodecContext, AVRational time_base,JNICallBack * jniCallBack)
         : BaseChannel(
-        stream_index, avCodecContext,time_base) {
+        stream_index, avCodecContext,time_base,jniCallBack) {
 
     //播放参数 必须固定 声卡要求 （输出 音频重要参数必须固定
     //输出必须固定
@@ -98,6 +98,13 @@ void AudioChannel::audio_decode() {
             releaseAVFrame(&frame);
             break;
         }
+
+
+        while (isPlay && frames.queueSize() > 100){
+            av_usleep(10 * 1000);
+            continue;
+        }
+
         //frame PCM
         frames.push(frame);
 
@@ -148,6 +155,9 @@ int AudioChannel::getPcm() {
 
         //获取音频包 帧 时间戳 (时间都是有单位的，在FFmpeg是成为时间基 TimeBase)
         audioTime = frame->best_effort_timestamp * av_q2d(this->time_base);
+        if(jniCallBack){
+            jniCallBack->onResultProgress(THREAD_CHILD,audioTime);
+        }
 
 
         break;

@@ -7,7 +7,18 @@
     tools:context=".MainActivity">
 
     <SurfaceView
+        app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/surface_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="300dp"/>
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/surface_view"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

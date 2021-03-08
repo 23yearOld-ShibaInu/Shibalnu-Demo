@@ -9,6 +9,9 @@
 #include "pthread.h"
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
+#include "JNICallBack.h"
+
+#include "Mr_Li_Log.h"
 
 extern "C"{
 #include "ffmpeg/include/libavcodec/avcodec.h"
@@ -20,10 +23,11 @@ class BaseChannel {
 public:
     int stram_index;
     AVCodecContext * avCodecContext;
-    BaseChannel(int stram_index, AVCodecContext *pContext,AVRational time_base){
+    BaseChannel(int stram_index, AVCodecContext *pContext,AVRational time_base,JNICallBack * jniCallBack){
         this->stram_index = stram_index;
         this->avCodecContext = pContext;
         this->time_base = time_base;
+        this->jniCallBack = jniCallBack;
         packets.setReleaseCallback(releaseAVPacket);
         frames.setReleaseCallback(releaseAVFrame);
     }
@@ -66,6 +70,8 @@ public:
     AVRational time_base;
     double audioTime;//每一帧，音频计算后的时间值
     double videoTime;//每一帧，视频计算后的时间值
+
+    JNICallBack * jniCallBack;
 };
 
 

@@ -70,19 +70,19 @@ void TrustPlayer::prepare_() {
         return;
     }
 
-    //寻找 媒体格式中的 音、视频、字母
+    //寻找 媒体格式中的 音、视频、字幕（字母多半跟视频在一起 基本不需要）
     //不给字典 是因为不需要设置额外配置
     status = avformat_find_stream_info(this->avFormatContext,0);
     if(status < 0){
         if(this->jniCallBack){
             //JNI回调 通知上层通知用户 失败
-
             this->jniCallBack->onErrorAction(THREAD_CHILD,FFMPEG_CAN_NOT_FIND_STREAMS);
         }
         return;
     }
 
     //媒体上下文，有了需要的值了
+    this->duration = avFormatContext->duration / AV_TIME_BASE;//最终需要拿到秒
 
     //遍历媒体格式里面的流n  流0视频 流1音频 流2字幕
 
@@ -132,7 +132,7 @@ void TrustPlayer::prepare_() {
         //区分媒体流格式 音频、视频
         //音频流
         if(avCodecParameters->codec_type == AVMEDIA_TYPE_AUDIO){
-            this->audioChannel = new AudioChannel(i, avCodecContext, time_base);
+            this->audioChannel = new AudioChannel(i, avCodecContext, time_base,jniCallBack);
         }
         //视频流 目前很多字幕流都放在视频轨道中
         else if(avCodecParameters->codec_type == AVMEDIA_TYPE_VIDEO){
@@ -141,7 +141,7 @@ void TrustPlayer::prepare_() {
             AVRational frame_rate = stream->avg_frame_rate;
             int fpsValue = av_q2d(frame_rate);
 
-            this->videoChannel = new VideoChannel(i, avCodecContext, time_base, fpsValue);
+            this->videoChannel = new VideoChannel(i, avCodecContext, time_base, fpsValue,jniCallBack);
             this->videoChannel->setRenderCallback(renderCallback);
         }
     }
@@ -224,4 +224,8 @@ void TrustPlayer:: start_() {
 
 void TrustPlayer::setRenderCallback(RenderCallback renderCallback) {
     this->renderCallback = renderCallback;
+}
+
+int TrustPlayer::getDuration() {
+    return this->duration;
 }

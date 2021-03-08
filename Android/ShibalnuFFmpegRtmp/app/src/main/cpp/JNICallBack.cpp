@@ -20,6 +20,9 @@ JNICallBack::JNICallBack(JavaVM *javaVm, JNIEnv *env, jobject instance) {
     const char * errorSig = "(I)V";
     this->jmd_error = env->GetMethodID(clasz,"onError",errorSig);
 
+    const char * progressSig = "(I)V";
+    this->jmd_onprogress = env->GetMethodID(clasz,"onProgress",progressSig);
+
 }
 
 JNICallBack::~JNICallBack() {
@@ -65,6 +68,20 @@ void JNICallBack::onErrorAction(int thread_mode, int error_code) {
         jniEnv->CallVoidMethod(this->instance,this->jmd_error,error_code);
 
         //结束附加线程
+        this->javaVm->DetachCurrentThread();
+    }
+}
+
+void JNICallBack::onResultProgress(int thread_mode,int nativeProgress) {
+    if(thread_mode == THREAD_MAIN){
+        this->env->CallVoidMethod(this->instance,this->jmd_onprogress,nativeProgress);
+    }else if(thread_mode == THREAD_CHILD){
+        JNIEnv * jniEnv = nullptr;
+        int ret = this->javaVm->AttachCurrentThreadAsDaemon(&jniEnv, nullptr);
+        if(ret != JNI_OK){
+            return ;
+        }
+        jniEnv->CallVoidMethod(this->instance,this->jmd_onprogress,nativeProgress);
         this->javaVm->DetachCurrentThread();
     }
 }

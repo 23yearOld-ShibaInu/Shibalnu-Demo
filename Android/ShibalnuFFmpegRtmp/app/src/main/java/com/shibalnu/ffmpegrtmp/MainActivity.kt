@@ -4,6 +4,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.View
+import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
@@ -15,6 +17,12 @@ class MainActivity : AppCompatActivity() {
 
     private var path1 = Environment.getExternalStorageDirectory()
         .toString() + File.separator + "speak.mp4"
+
+
+    private var duration = 0
+    private var isTouch = false
+    private var isSeek = false
+
     private val playerUtils:PlayerUtils = PlayerUtils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,15 +38,52 @@ class MainActivity : AppCompatActivity() {
         playerUtils.mPlayerCallBack = object :PlayerUtils.PlayerCallBack{
             override fun onPrepared() {
                 showLog("准备完成")
+                //直播的话 duration = 0
+                //本地视频文件 duration != 0
+                if (duration!=0) {
+                    runOnUiThread {
+                        seek_bar.visibility = View.VISIBLE
+                    }
+                }
+
                 playerUtils.start()
             }
 
             override fun onError(error: String) { showLog(error) }
+            override fun onProgress(progress: Int) {
+
+                if (!isTouch) {
+                    runOnUiThread {
+                        val duration = playerUtils.getDuration()
+                        if(duration !=0){
+                            if(isSeek){
+                                isSeek = false
+                                return@runOnUiThread
+                            }
+                            seek_bar.progress = progress * 100 / duration
+                        }
+                    }
+                }
+
+            }
 
         }
 
+        seek_bar.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, p1: Int, p2: Boolean) {
+                    showLog("onProgressChanged :${seekBar?.progress} p1:$p1 p2:$p2")
+            }
 
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+                isTouch = true
+            }
 
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+                isSeek = true
+                isTouch = false
+            }
+
+        })
     }
 
     override fun onResume() {
