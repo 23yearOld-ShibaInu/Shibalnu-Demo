@@ -80,7 +80,9 @@ Java_com_shibalnu_ffmpegrtmp_PlayerUtils_startNative(JNIEnv *env, jobject thiz) 
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_shibalnu_ffmpegrtmp_PlayerUtils_stopNative(JNIEnv *env, jobject thiz) {
-
+    if(trustPlayer){
+        trustPlayer->stop();
+    }
 }
 
 extern "C"
@@ -135,4 +137,15 @@ Java_com_shibalnu_ffmpegrtmp_PlayerUtils_getDuration(JNIEnv *env, jobject thiz) 
         return trustPlayer->getDuration();
     }
     return 0;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_shibalnu_ffmpegrtmp_PlayerUtils_seekToNative(JNIEnv *env, jobject thiz,
+                                                      jint play_progress) {
+    if(trustPlayer){
+        trustPlayer->seekTo(play_progress);
+    }else{
+        LOGD("trustPlayer == null");
+    }
 }

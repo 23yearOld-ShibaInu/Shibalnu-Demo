@@ -16,6 +16,7 @@ extern "C"{
     #include <libavformat/avformat.h>
 };
 class TrustPlayer {
+    friend  void *task_stop(void *args);
 public:
     TrustPlayer(const char *string,JNICallBack * jniCallBack);
 
@@ -31,10 +32,13 @@ public:
     void start_();
     void setRenderCallback(RenderCallback renderCallback);
     int getDuration();
+    void stop();
+    void seekTo(int i);
 private:
     char * data_source = 0;
     pthread_t pid_prepare = 0;
     pthread_t pid_start = 0;
+    pthread_t pid_stop = 0;
     AVFormatContext *avFormatContext = 0;
     JNICallBack * jniCallBack = 0;
     VideoChannel * videoChannel = 0;
@@ -42,6 +46,7 @@ private:
     RenderCallback renderCallback = 0;
     bool isPlayer = 0;
     int duration = 0;
+    pthread_mutex_t seekMutex;
 };
 
 

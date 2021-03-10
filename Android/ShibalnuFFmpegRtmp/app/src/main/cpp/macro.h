@@ -8,6 +8,10 @@
 #define THREAD_MAIN  1
 #define THREAD_CHILD  2
 
+
+//定义释放宏函数
+#define  DELETE(object) if(object){delete object;object = 0;};
+
 //打不开视频源
 #define FFMPEG_CAN_NOT_OPEN_URL  -1
 

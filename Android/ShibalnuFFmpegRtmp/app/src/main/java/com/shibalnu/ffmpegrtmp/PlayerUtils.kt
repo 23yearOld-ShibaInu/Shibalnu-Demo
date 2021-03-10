@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import kotlin.concurrent.thread
 
 class PlayerUtils :SurfaceHolder.Callback{
     companion object {
@@ -54,6 +55,12 @@ class PlayerUtils :SurfaceHolder.Callback{
     }
 
 
+    fun seekTo(playProgress:Int){
+        thread {
+            seekToNative(playProgress)
+        }
+    }
+
 
     /**
      * native区域
@@ -67,7 +74,7 @@ class PlayerUtils :SurfaceHolder.Callback{
     //底层操作surface对象
     external fun setSurfaceNative(surface: Surface)
     external fun getDuration():Int
-
+    external fun seekToNative(playProgress:Int);
     /**
      * native 调用上层
      */
@@ -92,7 +99,6 @@ class PlayerUtils :SurfaceHolder.Callback{
 
 
     fun onProgress(progress:Int){
-        Log.d("lhh","当前进度:$progress")
         mPlayerCallBack?.onProgress(progress)
     }
 

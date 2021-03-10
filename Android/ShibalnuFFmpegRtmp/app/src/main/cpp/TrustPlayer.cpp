@@ -26,6 +26,9 @@ TrustPlayer::~TrustPlayer(){
         delete this->data_source;
         this->data_source = 0;
     }
+    DELETE(data_source);
+    DELETE(jniCallBack);
+    pthread_mutex_destroy(&seekMutex);
 }
 
 TrustPlayer::TrustPlayer(const char * data_source,JNICallBack * jniCallBack){
@@ -39,6 +42,7 @@ TrustPlayer::TrustPlayer(const char * data_source,JNICallBack * jniCallBack){
     strcpy(this->data_source,data_source);
 
     this->jniCallBack = jniCallBack;
+    pthread_mutex_init(&seekMutex,0);
 }
 
 //准备工作 "解码"  拆包裹（音频流、视频流、字节流....）
@@ -193,7 +197,9 @@ void TrustPlayer:: start_() {
 
         //未解码格式保存在avPacket
         AVPacket * avPacket = av_packet_alloc();
+        pthread_mutex_lock(&seekMutex);
         int ret = av_read_frame(this->avFormatContext,avPacket);
+        pthread_mutex_unlock(&seekMutex);
 //        if(ret != 0){
 //            //
 //            this->jniCallBack->onErrorAction(THREAD_CHILD,FFMPEG_READ_PACKETS_FAIL);
@@ -210,9 +216,15 @@ void TrustPlayer:: start_() {
                 this->audioChannel->packets.push(avPacket);
             }
         }else if(ret == AVERROR_EOF){//文件末尾 读完了
-
+            if(this->videoChannel->packets.isEmpty() && this->videoChannel->frames.isEmpty()
+            && this->audioChannel->packets.isEmpty() && this->audioChannel->frames.isEmpty()){
+                av_packet_free(&avPacket);
+            }
         }else{
             //失败
+            if(this->jniCallBack){
+                this->jniCallBack->onErrorAction(THREAD_CHILD,FFMPEG_READ_PACKETS_FAIL);
+            }
             break;
         }
     }
@@ -229,3 +241,96 @@ void TrustPlayer::setRenderCallback(RenderCallback renderCallback) {
 int TrustPlayer::getDuration() {
     return this->duration;
 }
+
+
+void *task_stop(void *args) {
+    TrustPlayer *trustPlayer = static_cast<TrustPlayer *>(args);
+    //要保证_prepare方法(子线程中)执行完在释放(主线程)
+    //pthread_join 这里调用了会阻塞主线程，可能引发anr
+    trustPlayer->isPlayer = 0;//停止编解码
+    pthread_join(trustPlayer->pid_prepare,0);//要保证_preoare方法(子线程中)执行完在释放(主线程)的问题
+    if(trustPlayer->avFormatContext){
+        avformat_close_input(&trustPlayer->avFormatContext);
+        avformat_free_context(trustPlayer->avFormatContext);
+        trustPlayer->avFormatContext = 0;
+    }
+    DELETE(trustPlayer->videoChannel);
+    DELETE(trustPlayer->audioChannel);
+    DELETE(trustPlayer);
+    return 0;
+}
+
+void TrustPlayer::stop() {
+    this->jniCallBack = 0;
+    pthread_create(&pid_stop,0,task_stop,this);
+}
+
+void TrustPlayer::seekTo(int playProgress) {
+    LOGD("当前进度:%d",playProgress);
+    if(playProgress <0 || playProgress > duration){
+        LOGD("进度有问题:$d",playProgress);
+        return;
+    }
+    if(!this->audioChannel && ! this->videoChannel){
+        LOGD("音视频通道没有初始化");
+        return;
+    }
+
+    if(!avFormatContext){
+        LOGD("ffmpeg 上下文初始化异常");
+        return;
+    }
+
+    //1:上下文
+    //2:流索引  -1 表示选择的是默认流
+    //3:要seek到时间戳
+    //4:seek的方式
+    //AVSEEK_FLAG_BACKWARD： 表示seek到请求的时间戳之前的最靠近的一个关键帧
+    //AVSEEK_FLAG_BYTE：基于字节位置seek
+    //AVSEEK_FLAG_ANY：任意帧（可能不是关键帧，会花屏）
+    //AVSEEK_FLAG_FRAME：基于帧数seek
+
+    // 为什么要加互斥锁？ 我们用到了 媒体格式上下文formatContext，（音频通道，视频通道 都用到了formatContext）为了安全，所以加锁
+    pthread_mutex_lock(&seekMutex);
+
+    int ret = av_seek_frame(avFormatContext,-1,playProgress * AV_TIME_BASE , AVSEEK_FLAG_BACKWARD);
+    LOGD("ret:%d", ret);
+    if(ret < 0){
+        if(this->jniCallBack){
+            this->jniCallBack->onErrorAction(THREAD_CHILD, ret);
+        }
+        return;
+    }
+
+    /**
+     * 用户在拖动的过程中，还没有松手的过程中，(正在解码，正在播放.....)
+     * 上层放开手，拖动值--->时长值--->native(重新播放: 跳转到用户指定的位置播放)
+     */
+
+    if(this->audioChannel){
+        this->audioChannel->packets.setFlag(0);
+        this->audioChannel->frames.setFlag(0);
+        this->audioChannel->packets.clearQueue();
+        this->audioChannel->frames.clearQueue();
+
+        //清空数据后 重新工作
+        this->audioChannel->packets.setFlag(1);
+        this->audioChannel->frames.setFlag(1);
+    }
+
+    if(this->videoChannel){
+        this->videoChannel->packets.setFlag(0);
+        this->videoChannel->frames.setFlag(0);
+        this->videoChannel->packets.clearQueue();
+        this->videoChannel->frames.clearQueue();
+
+        //清空数据后 重新工作
+        this->videoChannel->packets.setFlag(1);
+        this->videoChannel->frames.setFlag(1);
+    }
+
+    pthread_mutex_unlock(&this->seekMutex);
+
+}
+
+

@@ -12,7 +12,7 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
     private val PATH = Environment.getExternalStorageDirectory()
-        .toString() + File.separator + "test.mp4"
+        .toString() + File.separator + "test1.mp4"
 //    private var path="rtmp://58.200.131.2:1935/livetv/hunantv"
 
     private var path1 = Environment.getExternalStorageDirectory()
@@ -74,13 +74,21 @@ class MainActivity : AppCompatActivity() {
                     showLog("onProgressChanged :${seekBar?.progress} p1:$p1 p2:$p2")
             }
 
-            override fun onStartTrackingTouch(p0: SeekBar?) {
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 isTouch = true
             }
 
-            override fun onStopTrackingTouch(p0: SeekBar?) {
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 isSeek = true
                 isTouch = false
+                //获取当前进度
+                val seekBarProgress = seekBar?.progress?:0
+                //转换seekbar
+                val duration = playerUtils.getDuration()
+                val playProgress = seekBarProgress * duration /100 //把拖动条的值，变成播放的进度时长
+                //将播放进度传给 native
+                showLog("滑动进度:$playProgress")
+                playerUtils.seekTo(playProgress)
             }
 
         })
