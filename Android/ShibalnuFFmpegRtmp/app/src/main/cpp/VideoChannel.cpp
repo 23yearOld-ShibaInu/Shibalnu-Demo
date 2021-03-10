@@ -199,7 +199,7 @@ void VideoChannel::video_player() {
         if(time_diff >0){
             //视频快一些 音频慢一些
             //等待音频
-            LOGD("视频快，音频慢");
+//            LOGD("视频快，音频慢");
             //细节处理
             if(time_diff > 1){
                 //*2是比较合适的 经过测试
@@ -220,14 +220,14 @@ void VideoChannel::video_player() {
             //releaseAVFrame(&avFrame); 不能这么操作
             if(fabs(time_diff) >= 0.05){
                 this->frames.syncAction();
-                LOGD("视频慢 音频块 需要丢帧");
+//                LOGD("视频慢 音频块 需要丢帧");
                 //继续 循环
                 continue;
             }
 
         }else {
             // 同步
-            LOGD("音视频同步");
+//            LOGD("音视频同步");
         }
 
 
